@@ -1,0 +1,41 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python application
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  PROJECT_SRC_REL: "src/algobench"
+  PROJECT_SETUP: "setup.py"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.12"
+
+    - name: Install dependencies
+      run: |
+        curl -sSLO https://pdm-project.org/install-pdm.py
+        curl -sSL https://pdm-project.org/install-pdm.py.sha256 | shasum -a 256 -c -
+        python3 install-pdm.py
+        pdm install
+
+    - name: Lint
+      run: |
+        pdm run black $PROJECT_SRC_REL $PROJECT_SETUP --check
+        pdm run flake8 $PROJECT_SRC_REL $PROJECT_SETUP
+
