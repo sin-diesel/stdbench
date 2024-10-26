@@ -1,0 +1,19 @@
+[project]
+name = "algobench"
+version = "0.1.0"
+description = "Python library designed for benchmarking standard C++ parallel algorithms, algotirhm policies on different standard libraries implementations, compilers and architectures."
+authors = [
+    {name = "Stanislav Sidelnikov", email = "sidelnikov.si.001@gmail.com"},
+]
+dependencies = []
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
