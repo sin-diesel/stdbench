@@ -32,6 +32,6 @@ jobs:
 
     - name: Lint
       run: |
-        black . --check
-        flake8 .
+        black src/algobench/ setup.py --check
+        flake8 src/algobench/ setup.py .
 
