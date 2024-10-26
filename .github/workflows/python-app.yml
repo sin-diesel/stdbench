@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  PROJECT_SRC_REL: "src/algobench"
+  PROJECT_SETUP: "setup.py"
+
 permissions:
   contents: read
 
@@ -32,6 +36,6 @@ jobs:
 
     - name: Lint
       run: |
-        black src/algobench/ setup.py --check
-        flake8 src/algobench/ setup.py .
+        black $PROJECT_SRC_REL $PROJECT_SETUP --check
+        flake8 $PROJECT_SRC_REL $PROJECT_SETUP .
 
