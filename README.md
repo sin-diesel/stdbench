@@ -15,6 +15,9 @@ podman run --interactive --tty --detach \
   --workdir "$HOME" \
   cpp_ubuntu:22.0.20
 
+# Allow non-root user
+podman exec --user root cpp bash -c "chown $(id --user):$(id --group) $HOME"
+
 # Run your command
 podman exec --workdir "$(pwd)" cpp bash -c "ls -l"
 
