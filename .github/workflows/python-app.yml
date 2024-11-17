@@ -42,7 +42,7 @@ jobs:
   conanrun:
       runs-on: ubuntu-24.04
       container:
-        image: docker.io/sindiesel/cpp_ubuntu_22.0.20
+        image: docker.io/sindiesel/cpp_ubuntu:22.0.20
         volumes:
           - ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}
       steps:
