@@ -1,0 +1,37 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Algobench
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  PROJECT_SRC_REL: "src/algobench"
+  PROJECT_SETUP: "setup.py"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: ${{ !github.event.act }}
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/sindiesel/cpp_ubuntu:22.0.20
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: composite
+        uses: ./.github/actions/build-composite
+  build_act:
+    if: ${{ github.event.act }}
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: composite
+      uses: ./.github/actions/build-composite
