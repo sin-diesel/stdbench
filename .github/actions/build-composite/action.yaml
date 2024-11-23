@@ -1,0 +1,35 @@
+runs:
+  using: "composite"
+  steps:
+  - uses: actions/checkout@v4
+  - name: Set up Python 3.12
+    uses: actions/setup-python@v3
+    with:
+      python-version: "3.12"
+
+  - name: Install dependencies
+    run: |
+      curl -sSLO https://pdm-project.org/install-pdm.py
+      curl -sSL https://pdm-project.org/install-pdm.py.sha256 | shasum -a 256 -c -
+      python3 install-pdm.py
+      pdm install
+    shell: bash
+
+  - name: Lint
+    run: |
+      pdm run black $PROJECT_SRC_REL $PROJECT_SETUP --check
+      pdm run flake8 $PROJECT_SRC_REL $PROJECT_SETUP
+    shell: bash
+
+  - name: PDM install
+    run: pdm install
+    shell: bash
+
+  - name: conan install
+    run: |
+      source .venv/bin/activate
+      conan --version
+      conan profile detect
+      conan install --build=missing .
+    shell: bash
+
