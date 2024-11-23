@@ -44,7 +44,7 @@ jobs:
       container:
         image: docker.io/sindiesel/cpp_ubuntu:22.0.20
         volumes:
-          - ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}
+          - ${{ github.workspace }}:${{ github.workspace }}
       steps:
         - name: PDM install
           run: pdm install
