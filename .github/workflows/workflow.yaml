@@ -29,9 +29,9 @@ jobs:
       - name: composite
         uses: ./.github/actions/build-composite
   build_act:
-    if ${{ github.event.act }}
-  runs-on: ubuntu-24.04
-  steps:
-  - uses: actions/checkout@v4
-  - name: composite
-    uses: ./.github/actions/build-composite
+    if: ${{ github.event.act }}
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: composite
+      uses: ./.github/actions/build-composite
