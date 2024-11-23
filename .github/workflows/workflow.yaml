@@ -19,6 +19,10 @@ permissions:
 jobs:
   build_act:
     runs-on: ubuntu-24.04
+    container:
+      image: docker.io/sindiesel/cpp_ubuntu:22.0.20
+      volumes:
+        - ${{ github.workspace }}:${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - name: composite
