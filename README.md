@@ -24,3 +24,14 @@ podman exec --workdir "$(pwd)" cpp bash -c "ls -l"
 # Attach to container
 podman exec --workdir "$(pwd)" --interactive --tty cpp bash
 ```
+
+### Running examples
+```
+conan install --build=missing .
+source build/Release/generators/conanbuild.sh
+
+cd examples/
+mkdir build
+cmake -B build -S . --toolchain ../build/Relese/generators/conan_toolchain.cmake
+cmake --build build
+```
