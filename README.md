@@ -1,4 +1,4 @@
-# algobench
+# stdbench
 Python library designed for benchmarking standard C++ parallel algorithms, algorithm policies on different standard libraries implementations, compilers and architectures.
 
 ## Testing in containerized environment
