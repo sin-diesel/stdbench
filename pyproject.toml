@@ -7,8 +7,9 @@ authors = [
 ]
 dependencies = [
     "conan==2.8.1",
-    "flake8>=7.1.1",
-    "black>=24.10.0",
+    "flake8==7.1.1",
+    "black==24.10.0",
+    "Cheetah3==3.2.6.post1",
 ]
 requires-python = "==3.12"
 readme = "README.md"
