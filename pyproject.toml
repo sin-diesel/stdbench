@@ -1,5 +1,5 @@
 [project]
-name = "algobench"
+name = "stdbench"
 version = "0.1.0"
 description = "Python library designed for benchmarking standard C++ parallel algorithms, algotirhm policies on different standard libraries implementations, compilers and architectures."
 authors = [
