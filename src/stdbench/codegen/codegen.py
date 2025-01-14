@@ -13,10 +13,10 @@ class CodeGenerator:
         return template_name.stem.with_suffix(".cpp")
 
     def generate(self) -> None:
-        with open(self._template, "r") as template_file:
-            contents = template_file.read()
+        with open(self._template_file, "r") as file:
+            contents = file.read()
 
-        generated_code = Template(contents, searchList=self._params)
+        generated_code = Template(contents, searchList=[self._params])
         output_file = self._generate_output_name(self._template_file)
 
         with open(output_file, "w") as fout:

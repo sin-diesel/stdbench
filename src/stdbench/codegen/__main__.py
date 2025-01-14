@@ -1,5 +1,7 @@
 
-from codegen import CodeGenerator
+from pathlib import Path
+
+from .codegen import CodeGenerator
 
 params = {
     "type": "int",
@@ -8,7 +10,7 @@ params = {
     "transform_function": ""
 }
 
-template_file = "transform.impl"
+template_file = Path("templates") / "transform.impl"
 
 generator = CodeGenerator(params, template_file)
 generator.generate()
