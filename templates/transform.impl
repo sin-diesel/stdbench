@@ -1,0 +1,19 @@
+#include <random>
+#include <vector>
+
+int main() {
+  long sz = ${size};
+  std::random_device RD;
+  std::mt19937 MT(RD());
+
+  std::vector<${type}> v(sz);
+  std::iota<v.begin(), v.end(), 0>
+  std::shuffle(v.begin(), v.end(), MT);
+
+  for (int i = 0; i < ${size}; ++i) {
+    start = v.begin();
+    end = start + sz;
+    std::transform(${policy}, start, end, ${transform_expression})
+  }
+  return 0;
+}
