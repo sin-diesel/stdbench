@@ -10,7 +10,7 @@ on:
     branches: [ "master" ]
 
 env:
-  PROJECT_SRC_REL: "src/algobench"
+  PROJECT_SRC_REL: "src/stdbench"
   PROJECT_SETUP: "setup.py"
 
 permissions:

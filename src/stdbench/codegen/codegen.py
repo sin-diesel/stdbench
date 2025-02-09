@@ -1,24 +1,39 @@
 #!/usr/bin/env python3
 
-from Cheetah.Template import Template
+from os.path import isdir
+from os import makedirs
+
 from pathlib import Path
+
+_repo_root = Path().parent.parent.parent
 
 
 class CodeGenerator:
-    def __init__(self, params: dict[str, str], template_file: Path) -> None:
+    def __init__(
+        self,
+        params: dict[str, str],
+        template_file: Path,
+        artifacts_folder=_repo_root / "generated",
+    ) -> None:
         self._params = params
         self._template_file = template_file
+        self._artifacts_folder = artifacts_folder
 
-    def _generate_output_name(self, template_name: Path) -> None:
-        return template_name.stem.with_suffix(".cpp")
+        if self._artifacts_folder.exists() and isdir(self._artifacts_folder):
+            return
+
+        makedirs(self._artifacts_folder)
+
+    def _generate_output_name(self, template_path: Path) -> None:
+        return Path(template_path.stem).with_suffix(".cpp")
 
     def generate(self) -> None:
         with open(self._template_file, "r") as file:
             contents = file.read()
 
-        generated_code = Template(contents, searchList=[self._params])
-        output_file = self._generate_output_name(self._template_file)
+        output_file = self._artifacts_folder / self._generate_output_name(
+            self._template_file
+        )
 
         with open(output_file, "w") as fout:
-            fout.write(str(generated_code))
-
+            fout.write(contents.format(**self._params))

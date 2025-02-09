@@ -9,7 +9,6 @@ dependencies = [
     "conan==2.8.1",
     "flake8==7.1.1",
     "black==24.10.0",
-    "Cheetah3==3.2.6.post1",
     "pytest==8.3.4"
 ]
 requires-python = "==3.12"
@@ -24,7 +23,7 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.black]
-line_length = "127"
+line_length = "80"
 
 [tool.flake8]
 show_source = true 
