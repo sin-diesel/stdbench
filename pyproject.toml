@@ -1,5 +1,5 @@
 [project]
-name = "algobench"
+name = "stdbench"
 version = "0.1.0"
 description = "Python library designed for benchmarking standard C++ parallel algorithms, algotirhm policies on different standard libraries implementations, compilers and architectures."
 authors = [
@@ -7,8 +7,9 @@ authors = [
 ]
 dependencies = [
     "conan==2.8.1",
-    "flake8>=7.1.1",
-    "black>=24.10.0",
+    "flake8==7.1.1",
+    "black==24.10.0",
+    "pytest==8.3.4"
 ]
 requires-python = "==3.12"
 readme = "README.md"
@@ -22,7 +23,7 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.black]
-line_length = "127"
+line_length = "80"
 
 [tool.flake8]
 show_source = true 
