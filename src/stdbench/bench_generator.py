@@ -5,15 +5,15 @@ from os import makedirs
 
 from pathlib import Path
 
-_repo_root = Path().parent.parent.parent
+from stdbench.utils import repo_root
 
 
-class CodeGenerator:
+class BenchGenerator:
     def __init__(
         self,
         params: dict[str, str],
         template_file: Path,
-        artifacts_folder=_repo_root / "generated",
+        artifacts_folder=repo_root / "generated",
     ) -> None:
         self._params = params
         self._template_file = template_file
@@ -37,3 +37,4 @@ class CodeGenerator:
 
         with open(output_file, "w") as fout:
             fout.write(contents.format(**self._params))
+

@@ -1,7 +1,7 @@
 
 from pathlib import Path
 
-from stdbench.codegen import CodeGenerator
+from stdbench.bench_generator import BenchGenerator
 
 params = {
     "size": 10000,
@@ -16,6 +16,6 @@ template_file = _repo_root / "templates" / "transform.impl"
 
 
 def test_generator() -> None:
-    generator = CodeGenerator(params, template_file)
+    generator = BenchGenerator(params, template_file)
     generator.generate()
 
