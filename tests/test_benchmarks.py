@@ -23,14 +23,8 @@ def test_generator() -> None:
     generator.generate()
 
 def test_bench_compiler() -> None:
-    shutil.rmtree(_repo_root / "generated")
-
-    generator = BenchGenerator(params, template_file)
-    generator.generate()
-
-    compiler_path = os.environ["CC"]
+    compiler_path = os.environ["CXX"]
     assert "conan" in compiler_path
-    breakpoint()
 
     compiler = BenchCompiler(compiler_path, benchmarks_folder = _repo_root / "tests" / "benchmarks")
     compiler.compile()
