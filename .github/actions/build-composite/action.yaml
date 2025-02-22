@@ -29,6 +29,6 @@ runs:
 
   - name: test
     run: |
-      pdm run pytest tests/
+      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/
     shell: bash
 
