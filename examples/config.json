@@ -1,0 +1,29 @@
+{
+  "arch": "x86_64",
+  "executor": "host",
+  "benchmarks": [
+    "transform.*": {
+      "template": {
+        "size": [10000, 20000, 30000],
+        "type": ["int"],
+        "transform_expression": "[](int x) { return x * 2 }",
+        "policy": "par"
+      }
+    },
+    "reduce": {
+      "template": {
+        "size": [10000, 20000, 30000],
+        "type": ["int"],
+        "transform_expression": "[](int x) { return x + 2 }",
+        "policy": "par"
+      }
+    },
+    "sort": {
+      "template": {
+        "size": [10000, 20000, 30000],
+        "type": ["int"],
+        "policy": "par"
+      }
+    }
+  ]
+}

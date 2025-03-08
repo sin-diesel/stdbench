@@ -17,17 +17,6 @@ class BenchCompiler:
         self._compiler_path = compiler_path
         self._benchmark = benchmark
 
-    def _find_benchmarks(self) -> list[Benchmark]:
-        benchmarks: list[Benchmark] = []
-
-        _logger.debug(f"Discovering benchmarks in {self._benchmarks_folder}")
-        for file in os.listdir(self._benchmarks_folder):
-            if file.endswith(".cpp"):
-                _logger.debug(f"Found benchmark candidate: {file}")
-                benchmarks.append(Benchmark(self._benchmarks_folder / file))
-
-        return benchmarks
-
     def compile(self) -> None:
         if not self._benchmark.binary_path.parent.exists():
             os.makedirs(self._benchmark.binary_path.parent)
