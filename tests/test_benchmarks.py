@@ -5,7 +5,7 @@ from pathlib import Path
 from stdbench.bench_generator import BenchGenerator
 from stdbench.bench_compiler import BenchCompiler
 from stdbench.benchmark import Benchmark
-from stdbench.bench_factory import BenchFactory
+from stdbench.bench_factory import BenchFactory, BenchConfig
 
 params = {
     "size": 10000,
@@ -23,6 +23,11 @@ def test_get_templates() -> None:
     bench_factory = BenchFactory(templates_path=_repo_root / "templates", benchmarks_path=_repo_root / "artifacts"  / "benchmarks")
     templates =  bench_factory._get_templates()
     assert templates is not None
+
+def test_filter_configs() -> None:
+    config = BenchConfig(regex="transform|reduce", params={"size": [10000, 20000, 30000], "transform_expression": "[](int x) { return x * 2 }", "type": "int", "policy": "par"})
+    bench_factory = BenchFactory(templates_path=_repo_root / "templates", benchmarks_path=_repo_root / "artifacts"  / "benchmarks", configs=[config])
+    templates = bench_factory.generate()
 
 def test_generator() -> None:
     generator = BenchGenerator(params=params, template_file=template_file, artifacts_folder=_repo_root / "sources")

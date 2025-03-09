@@ -7,13 +7,13 @@ int main() {{
   std::mt19937 MT(RD());
 
   std::vector<{type}> v(sz);
-  std::iota<v.begin(), v.end(), 0>
+  std::iota<v.begin(), v.end(), 0>;
   std::shuffle(v.begin(), v.end(), MT);
 
   for (int i = 0; i < {size}; ++i) {{
     start = v.begin();
     end = start + sz;
-    std::reduce(std::execution::{policy}, start, end)
+    std::reduce(std::execution::{policy}, start, end);
   }}
   return 0;
 }}

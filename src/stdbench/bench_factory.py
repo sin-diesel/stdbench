@@ -18,10 +18,10 @@ class Template:
     path: Path
 
 
+@dataclass
 class BenchConfig:
-    def __init__(self, regex: str, **template_params: dict[str, Any]) -> None:
-        self._regex = re.compile(regex)
-        self._template_params = template_params
+    regex: str
+    params: dict[str, Any]
 
 
 class BenchFactory:
@@ -51,8 +51,15 @@ class BenchFactory:
             raise RuntimeError(f"{self._templates_path} is empty")
 
         for template in template_files:
-            template_abspath = self._templates_path / "templates"
-            _logger.debug(f"Found template {template_abspath}")
-            templates.append(Template(name=template, path=template_abspath))
+            _logger.debug(f"Found template {self._templates_path / template}")
+            templates.append(Template(name=template, path=self._templates_path / template))
         return templates
 
+    def generate(self) -> None:
+        templates = self._get_templates()
+        for config in self._configs:
+            filtered_templates = filter(lambda template: re.search(config.regex, template.name), templates)
+            for template in filtered_templates:
+                _logger.debug(f"Creating benchmark from template {template}, params: {config.params}")
+                bench_generator = BenchGenerator(template_file=template.path, artifacts_folder=self._benchmarks_path, params=config.params)
+                bench_generator.generate()

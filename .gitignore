@@ -166,4 +166,5 @@ generated
 a.out
 *.elf
 sources/
+artifacts/
 
