@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-
 import os
 import logging
 
 from pathlib import Path
+from typing import Any
 
 from stdbench.utils import repo_root
 
@@ -31,7 +31,11 @@ class BenchGenerator:
     def _generate_output_name(self, template_path: Path) -> None:
         return Path(template_path.stem).with_suffix(".cpp")
 
-    def generate(self) -> None:
+    def _bench_name(self, template_file: Path, params: dict[str, Any]) -> str:
+        params_str = "_".join([f"{item[0]}_{item[1]}" for item in params.items()])
+        return f"{template_file.stem}_{params_str}"
+
+    def generate(self) -> str:
         with open(self._template_file, "r") as file:
             contents = file.read()
 
@@ -45,3 +49,6 @@ class BenchGenerator:
             _logger.info(
                 f"[finished] Generating sources to {output_file}: done"
             )
+
+        return self._bench_name(self._template_file, self._params)
+

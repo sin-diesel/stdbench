@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from stdbench.config import ARCH
 from stdbench.config import EXECUTOR
 from stdbench.bench_generator import BenchGenerator
+from stdbench.benchmark import Benchmark
 
 _logger = logging.Logger(__file__)
 
@@ -32,7 +33,7 @@ class BenchFactory:
         executor: EXECUTOR = EXECUTOR.HOST,
         arch: ARCH = ARCH.X86_64,
         binaries_path: Path = Path.cwd() / "elf",
-        configs=None,
+        configs=None
     ) -> None:
         self._arch = arch
         self._executor = executor
@@ -40,6 +41,8 @@ class BenchFactory:
         self._benchmarks_path = benchmarks_path
         self._binaries_path = binaries_path
         self._configs = configs
+
+        self._benchmarks: list[Benchmark] = []
 
     def _get_templates(self) -> list[Template]:
         templates: list[Template] = []
@@ -62,4 +65,9 @@ class BenchFactory:
             for template in filtered_templates:
                 _logger.debug(f"Creating benchmark from template {template}, params: {config.params}")
                 bench_generator = BenchGenerator(template_file=template.path, artifacts_folder=self._benchmarks_path, params=config.params)
-                bench_generator.generate()
+
+                bench_name = bench_generator.generate()
+                self._benchmarks.append(Benchmark(source_path=self._benchmarks_path / f"{bench_name}.cpp", binary_path = self._binaries_path / f"{bench_name}.elf" ))
+
+    def compile(self) -> None:
+        pass
