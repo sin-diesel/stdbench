@@ -5,6 +5,7 @@ from pathlib import Path
 
 from stdbench.bench_generator import BenchGenerator
 from stdbench.bench_compiler import BenchCompiler
+from stdbench.bench_runner import BenchRunner
 from stdbench.benchmark import Benchmark
 from stdbench.bench_factory import BenchFactory, BenchConfig
 
@@ -54,4 +55,5 @@ def test_bench_compiler() -> None:
 def test_full_run(bench_factory):
     bench_factory.generate()
     bench_factory.compile()
+    bench_factory.run()
 

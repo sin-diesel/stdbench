@@ -9,6 +9,7 @@ from stdbench.config import ARCH
 from stdbench.config import EXECUTOR
 from stdbench.bench_generator import BenchGenerator
 from stdbench.bench_compiler import BenchCompiler
+from stdbench.bench_runner import BenchRunner
 from stdbench.benchmark import Benchmark
 
 _logger = logging.Logger(__file__)
@@ -87,3 +88,8 @@ class BenchFactory:
         for benchmark in self._benchmarks:
             bench_compiler = BenchCompiler(compiler_path=compiler_path, benchmark=benchmark)
             bench_compiler.compile()
+
+    def run(self) -> None:
+        for benchmark in self._benchmarks:
+            bench_runner = BenchRunner(benchmark)
+            bench_runner.run()
