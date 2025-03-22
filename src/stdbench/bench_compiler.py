@@ -33,6 +33,4 @@ class BenchCompiler:
         _logger.info(f"[started] Compiling {self._benchmark.source_path}")
         _logger.debug(f"Running command: {cmd} ")
         subprocess.run(cmd, check=True)
-        _logger.info(
-            f"[finished] Compiling {self._benchmark.source_path}: done"
-        )
+        _logger.info(f"[finished] Compiling {self._benchmark.source_path}: done")

@@ -8,4 +8,3 @@ from pathlib import Path
 class Benchmark:
     source_path: Path
     binary_path: Path
-

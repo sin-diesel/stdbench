@@ -6,7 +6,7 @@ from stdbench.bench_generator import BenchGenerator
 params = {
     "size": 10000,
     "type": "int",
-    "transform_expression": "[](int x) { return x * 2; }",
+    "transform_expression": "[](int x) { return x * 2; };",
     "policy": "par"
 }
 
