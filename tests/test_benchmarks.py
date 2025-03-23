@@ -26,7 +26,7 @@ def bench_factory():
     bench_factory = BenchFactory(templates_path=_repo_root / "templates", benchmarks_path=_repo_root / "artifacts"  / "benchmarks", configs=[config])
     yield bench_factory
 
-def test_get_templates() -> None:
+def test_get_templates(bench_factory) -> None:
     templates =  bench_factory._get_templates()
     assert templates is not None
 
