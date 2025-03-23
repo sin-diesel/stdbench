@@ -13,8 +13,8 @@ int main() {{
   std::shuffle(v.begin(), v.end(), MT);
 
   for (int i = 0; i < {size}; ++i) {{
-    start = v.begin();
-    end = start + sz;
+    auto start = v.begin();
+    auto end = start + sz;
     std::transform(std::execution::{policy}, start, end, start, {transform_expression});
   }}
   return 0;
