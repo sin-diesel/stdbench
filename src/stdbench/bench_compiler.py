@@ -18,17 +18,4 @@ class BenchCompiler:
     def compile(self) -> None:
         if not self._benchmark.binary_path.parent.exists():
             os.makedirs(self._benchmark.binary_path.parent)
-
-        cmd = [self._compiler_path, self._benchmark.source_path]
-        if _logger.getEffectiveLevel() <= logging.DEBUG:
-            cmd.append("--verbose")
-        cmd = [
-            self._compiler_path,
-            self._benchmark.source_path,
-            "-o",
-            self._benchmark.binary_path,
-        ]
-        _logger.info(f"[started] Compiling {self._benchmark.source_path}")
-        _logger.debug(f"Running command: {cmd} ")
-        subprocess.run(cmd, check=True)
-        _logger.info(f"[finished] Compiling {self._benchmark.source_path}: done")
+        cmd = ["cmake", "--build", "build", "--target", self._benchmark.name]

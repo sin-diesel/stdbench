@@ -27,7 +27,12 @@ class BenchGenerator:
         os.makedirs(self._artifacts_folder)
 
     def _bench_name(self, template_file: Path, params: dict[str, Any]) -> str:
-        params_str = "_".join([f"{item[0]}_{item[1]}" for item in params.items()])
+        params_str = "_".join([f"{item[0]}_{item[1]}" for item in params.items()]).replace(" ", "_")
+        params_str = params_str.translate(str.maketrans("", "", "}{;->*/+-,"))
+        params_str = params_str.replace("[", "_")
+        params_str = params_str.replace("]", "_")
+        params_str = params_str.replace("(", "_")
+        params_str = params_str.replace(")", "_")
         return f"{template_file.stem}_{params_str}"
 
     def generate(self) -> str:

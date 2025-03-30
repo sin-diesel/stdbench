@@ -7,6 +7,6 @@ class BenchRunner:
         self._benchmark = benchmark
 
     def run(self) -> None:
-        cmd = ["time", self._benchmark.binary_path]
-        time = subprocess.run(cmd, check=True, capture_output=True)
-        print(time)
+        cmd = [self._benchmark.binary_path]
+        subprocess.run(cmd, check=True)
+

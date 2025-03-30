@@ -24,7 +24,7 @@ runs:
       source .venv/bin/activate
       conan --version
       conan profile detect
-      conan install --build=missing .
+      conan install -s compiler.cppstd=17 -s compiler.version=11 .
     shell: bash
 
   - name: test

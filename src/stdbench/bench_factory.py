@@ -1,6 +1,7 @@
 import logging
 import re
 import os
+import subprocess
 from typing import Any
 from pathlib import Path
 from dataclasses import dataclass
@@ -68,28 +69,38 @@ class BenchFactory:
                 lambda template: re.search(config.regex, template.name),
                 templates,
             )
-            for template in filtered_templates:
-                bench_generator = BenchGenerator(
-                    template_file=template.path,
-                    artifacts_folder=self._benchmarks_path,
-                    params=config.params,
-                )
-                bench_name = bench_generator.generate()
-                self._benchmarks.append(
-                    Benchmark(
-                        source_path=self._benchmarks_path / f"{bench_name}.cpp",
-                        binary_path=self._binaries_path / f"{bench_name}.elf",
-                    )
-                )
+            for param, value in config.params.items():
+                if not isinstance(value, list):
+                    value = [value]
+                else:
+                    breakpoint()
+                for item in value:
+                    for template in filtered_templates:
+                        bench_config = config.params.copy()
+                        bench_config[param] = item
+                        bench_generator = BenchGenerator(
+                            template_file=template.path,
+                            artifacts_folder=self._benchmarks_path,
+                            params=bench_config,
+                        )
+                        bench_name = bench_generator.generate()
+                        self._benchmarks.append(
+                            Benchmark(
+                                source_path=self._benchmarks_path / f"{bench_name}.cpp",
+                                binary_path=self._binaries_path / f"{bench_name}.elf",
+                            )
+                        )
 
-    def compile(self) -> None:
-        # Refactor it later
-        compiler_path = os.environ["CXX"]
-        for benchmark in self._benchmarks:
-            bench_compiler = BenchCompiler(compiler_path=compiler_path, benchmark=benchmark)
-            bench_compiler.compile()
+    def configure(self) -> None:
+        cmd = ["cmake", ".", "-B", "build", "-G", "Unix Makefiles", f"-DBENCHMARKS_FOLDER={self._benchmarks_path}", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake", "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW", "-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY={self._binaries_path}"]
+        subprocess.run(cmd, check=True)
 
-    def run(self) -> None:
-        for benchmark in self._benchmarks:
-            bench_runner = BenchRunner(benchmark)
-            bench_runner.run()
+        #for benchmark in self._benchmarks:
+        #    bench_compiler = BenchCompiler(compiler_path=compiler_path, benchmark=benchmark)
+        #    bench_compiler.compile()
+
+    #def run(self) -> None:
+      #  pass
+        #for benchmark in self._benchmarks:
+        #j    bench_runner = BenchRunner(benchmark)
+        #    bench_runner.run()

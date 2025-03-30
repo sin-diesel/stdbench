@@ -34,26 +34,17 @@ def test_filter_configs() -> None:
     config = BenchConfig(regex="transform|reduce", params={"size": [10000, 20000, 30000], "transform_expression": "[](int x) { return x * 2; }", "type": "int", "policy": "par"})
     bench_factory = BenchFactory(templates_path=_repo_root / "templates", benchmarks_path=_repo_root / "artifacts"  / "benchmarks", configs=[config])
     templates = bench_factory.generate()
-
-def test_compiler(bench_factory) -> None:
+def test_configure(bench_factory) -> None:
     templates = bench_factory.generate()
-    bench_factory.compile()
+    bench_factory.configure()
 
 def test_generator() -> None:
     generator = BenchGenerator(params=params, template_file=template_file, artifacts_folder=_repo_root / "sources")
     generator.generate()
 
-def test_bench_compiler() -> None:
-    compiler_path = os.environ["CXX"]
-    assert "conan" in compiler_path
-
-    compiler = BenchCompiler(compiler_path,
-                             benchmark=Benchmark(source_path=_repo_root / "tests" / "benchmarks" / "transform.cpp",
-                                                 binary_path=_repo_root / "tests" / "bin" / "transform.elf"))
-    compiler.compile()
-
 def test_full_run(bench_factory):
     bench_factory.generate()
-    bench_factory.compile()
-    bench_factory.run()
+    bench_factory.configure()
+    cmd = ["cmake", "--build", "build"]
+   # bench_factory.run()
 
