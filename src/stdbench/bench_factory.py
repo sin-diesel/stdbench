@@ -35,7 +35,7 @@ class BenchFactory:
         benchmarks_path: Path,
         executor: EXECUTOR = EXECUTOR.HOST,
         arch: ARCH = ARCH.X86_64,
-        binaries_path: Path = Path.cwd() / "elf",
+        build_folder: Path = Path.cwd() / "build" / "Release",
         configs=None,
         compiler_path=None,
     ) -> None:
@@ -43,7 +43,7 @@ class BenchFactory:
         self._executor = executor
         self._templates_path = templates_path
         self._benchmarks_path = benchmarks_path
-        self._binaries_path = binaries_path
+        self._build_folder = build_folder
         self._configs = configs
         self._compiler_path = compiler_path
 
@@ -72,8 +72,6 @@ class BenchFactory:
             for param, value in config.params.items():
                 if not isinstance(value, list):
                     value = [value]
-                else:
-                    breakpoint()
                 for item in value:
                     for template in filtered_templates:
                         bench_config = config.params.copy()
@@ -87,12 +85,12 @@ class BenchFactory:
                         self._benchmarks.append(
                             Benchmark(
                                 source_path=self._benchmarks_path / f"{bench_name}.cpp",
-                                binary_path=self._binaries_path / f"{bench_name}.elf",
+                                binary_path=self._build_folder / bench_name,
                             )
                         )
 
     def configure(self) -> None:
-        cmd = ["cmake", ".", "-B", "build", "-G", "Unix Makefiles", f"-DBENCHMARKS_FOLDER={self._benchmarks_path}", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake", "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW", "-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_RUNTIME_OUTPUT_DIRECTORY={self._binaries_path}"]
+        cmd = ["cmake", ".", "-B", self._build_folder, "-G", "Unix Makefiles", f"-DBENCHMARKS_FOLDER={self._benchmarks_path}", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake", "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW", "-DCMAKE_BUILD_TYPE=Release"]
         subprocess.run(cmd, check=True)
 
         #for benchmark in self._benchmarks:

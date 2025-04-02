@@ -3,20 +3,23 @@
 #include <random>
 #include <vector>
 
-int main() {{
-  long sz = {size};
-  std::random_device RD;
-  std::mt19937 MT(RD());
+#include "benchmark/cppbenchmark.h"
 
-  std::vector<{type}> v(sz);
-  std::iota(v.begin(), v.end(), 0);
-  std::shuffle(v.begin(), v.end(), MT);
+long sz = {size};
+std::random_device RD;
+std::mt19937 MT(RD());
 
+std::vector<{type}> v(sz);
+std::iota(v.begin(), v.end(), 0);
+std::shuffle(v.begin(), v.end(), MT);
+
+BENCHMARK("transform")
+{{
   for (int i = 0; i < {size}; ++i) {{
     auto start = v.begin();
     auto end = start + sz;
     std::transform(std::execution::{policy}, start, end, start, {transform_expression});
   }}
-  return 0;
 }}
 
+BENCHMARK_MAIN()

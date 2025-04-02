@@ -1,6 +1,7 @@
 import pytest
 import shutil
 import os
+import subprocess
 from pathlib import Path
 
 from stdbench.bench_generator import BenchGenerator
@@ -45,6 +46,6 @@ def test_generator() -> None:
 def test_full_run(bench_factory):
     bench_factory.generate()
     bench_factory.configure()
-    cmd = ["cmake", "--build", "build"]
-   # bench_factory.run()
+    cmd = ["cmake", "--build", "build/Release"]
+    subprocess.run(cmd, check=True)
 
