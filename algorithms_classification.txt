@@ -1,0 +1,15 @@
+algorithm         parallel_signatures                                                                                                       class
+for_each          (ExecutionPolicy&& policy, ForwardIt first, ForwardIt last, UnaryFunc f)                                                  InputRangeUnaryFunc
+for_each_n        (ExecutionPolicy&& policy, ForwardIt first, Size n, UnaryFunc f)                                                          ?
+any/all/none_of   (ExecutionPolicy&& policy, ForwardIt first, ForwardIt last, UnaryPred p )                                                 InputRangeUnaryPred
+find_if*          (ExecutionPolicy&& policy, ForwardIt first, ForwardIt last, const T& value )                                              InputRangeValue
+                  (ExecutionPolicy&& policy, ForwardIt first, ForwardIt last, UnaryPred p )                                                 InputRangeUnaryPred
+find_first_of     (ExecutionPolicy&& policy, ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first, ForwardIt2 s_last )                     InputInputRange
+                  (ExecutionPolicy&& policy, ForwardIt1 first, ForwardIt1 last, ForwardIt2 s_first, ForwardIt2 s_last, BinaryPred p )       InputInputRangeBinaryPred
+count_if          (ExecutionPolicy&& policy, ForwardIt first, ForwardIt last, const T& value)                                               InputRangeValue
+                  (ExecutionPolicy&& policy, ForwardIt first, ForwardIt last, UnaryPred p)                                                  InputRangeUnaryPred
+copy_if           (ExecutionPolicy&& policy, ForwardIt1 first, ForwardIt1 last, ForwardIt2 d_first)                                         InputRangeIterator
+                  (ExecutionPolicy&& policy, ForwardIt1 first, ForwardIt1 last, ForwardIt2 d_first, UnaryPred pred)                         InputRangeIteratorPred
+transform         (ExecutionPolicy&& policy, ForwardIt1 first1, ForwardIt1 last1, ForwardIt2 d_first, UnaryOp unary_op )                    InputRangeIteratorUnaryOp
+                  (ExecutionPolicy&& policy, InputIt1 first1, InputIt1 last1, InputIt2 first2, OutputIt d_first, BinaryOp binary_op)        InputRangeInputOutputBinaryOp
+ 
