@@ -8,8 +8,8 @@ class StdbenchRecipe(ConanFile):
     generators = "CMakeDeps", "CMakeToolchain"
 
     def requirements(self):
-        self.build_requires("gcc/12.2.0")
-        self.build_requires("benchmark/1.9.0")
+        self.requires("gcc/12.2.0")
+        self.requires("benchmark/1.9.0")
 
     def layout(self):
         cmake_layout(self)
