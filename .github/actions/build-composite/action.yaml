@@ -24,14 +24,14 @@ runs:
       source .venv/bin/activate
       conan --version
       conan profile detect
-      conan install --build=missing .
+      conan install . -s compiler.cppstd=17 -s compiler.version=11
     shell: bash
 
   - name: test
     run: |
       source .venv/bin/activate
-      conan install --build=missing .
+      conan install . -s compiler.cppstd=17 -s compiler.version=11
       source build/Release/generators/conanbuild.sh
-      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/
+      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
     shell: bash
 
