@@ -10,18 +10,42 @@ from pathlib import Path
 #from stdbench.bench_factory import BenchFactory, BenchConfig
 
 from stdbench.benchmark import Benchmark
-from stdbench.renderers import BenchmarkRenderer, ParPolicyRenderer, InputDestRenderer, UnaryPredRenderer
+from stdbench.renderers import BenchmarkRenderer, ParPolicyRenderer, InputDestRenderer, SingleInputRenderer, UnaryPredRenderer
+from stdbench.renderers import SingleInputSizeRenderer
 
 
 _repo_root = Path().parent.parent
 
 
-def test_benchmark():
+def test_copy_if():
     benchmark = Benchmark(benchmark_renderer=BenchmarkRenderer(name="std::copy_if"), policy_renderer=ParPolicyRenderer(), inputs_renderer=InputDestRenderer(), predicate_renderer=UnaryPredRenderer())
     output = benchmark.render()
 
     bench_path = _repo_root / "benchmarks" / "copy_if.cpp"
     bench_path.write_text(output)
+
+def test_for_each():
+    benchmark = Benchmark(benchmark_renderer=BenchmarkRenderer(name="std::for_each"), policy_renderer=ParPolicyRenderer(), inputs_renderer=SingleInputRenderer(), predicate_renderer=UnaryPredRenderer("[](int &n) { n++; }"))
+    output = benchmark.render()
+
+    bench_path = _repo_root / "benchmarks" / "for_each.cpp"
+    bench_path.write_text(output)
+
+def test_for_each_n():
+    benchmark = Benchmark(benchmark_renderer=BenchmarkRenderer(name="std::for_each_n"), policy_renderer=ParPolicyRenderer(), inputs_renderer=SingleInputSizeRenderer(), predicate_renderer=UnaryPredRenderer("[](auto& n) { n *= 2; }"))
+    output = benchmark.render()
+
+    bench_path = _repo_root / "benchmarks" / "for_each_n.cpp"
+    bench_path.write_text(output)
+
+def test_all_of():
+    benchmark = Benchmark(benchmark_renderer=BenchmarkRenderer(name="std::all_of"), policy_renderer=ParPolicyRenderer(), inputs_renderer=SingleInputRenderer(), predicate_renderer=UnaryPredRenderer("[](int i) { return i % 2 == 0; }"))
+    output = benchmark.render()
+
+    bench_path = _repo_root / "benchmarks" / "all_of.cpp"
+    bench_path.write_text(output)
+
+
 #params = {
 #    "size": 10000,
 #    "type": "int",

@@ -3,6 +3,11 @@ project(stdbench)
 
 find_package(benchmark REQUIRED)
 
-add_executable(example benchmarks/copy_if.cpp)
-target_link_libraries(example benchmark::benchmark)
-
+add_executable(copy_if benchmarks/copy_if.cpp)
+add_executable(for_each benchmarks/for_each.cpp)
+add_executable(for_each_n benchmarks/for_each_n.cpp)
+add_executable(all_of benchmarks/all_of.cpp)
+target_link_libraries(copy_if benchmark::benchmark)
+target_link_libraries(for_each benchmark::benchmark)
+target_link_libraries(for_each_n benchmark::benchmark)
+target_link_libraries(all_of benchmark::benchmark)

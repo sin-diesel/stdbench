@@ -60,6 +60,46 @@ std::iota({from_container}.begin(), {from_container}.end(), 0);
         return template.render(setup=setup, first=first, last=last, d_first=d_first, size="", s_range="")
 
 
+class SingleInputRenderer(Renderer):
+    def __init__(self, container: str = "std::vector<int>", size: int = 10000) -> None:
+        super().__init__()
+        self._container = container
+        self._size = size
+
+    def render(self, text: str) -> str:
+        from_container = "test_from_container"
+        template = self._env.from_string(text)
+
+        setup = f"""
+{self._container} {from_container}({self._size});
+std::iota({from_container}.begin(), {from_container}.end(), 0);
+        """
+        first = f"{from_container}.begin(),"
+        last = f"{from_container}.end(),"
+
+        return template.render(setup=setup, first=first, last=last, d_first="", size="", s_range="")
+
+
+class SingleInputSizeRenderer(Renderer):
+    def __init__(self, container: str = "std::vector<int>", size: int = 10000, n: int = 10) -> None:
+        super().__init__()
+        self._container = container
+        self._size = size
+        self._n = n
+
+    def render(self, text: str) -> str:
+        from_container = "test_from_container"
+        template = self._env.from_string(text)
+
+        setup = f"""
+{self._container} {from_container}({self._size});
+std::iota({from_container}.begin(), {from_container}.end(), 0);
+        """
+        first = f"{from_container}.begin(),"
+
+        return template.render(setup=setup, first=first, last="", size=f"{self._n},", d_first="", s_range="")
+
+
 class UnaryPredRenderer(Renderer):
     def __init__(self, pred: str = "[](int x) { return x % 3 == 0; }") -> None:
         super().__init__()
