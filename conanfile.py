@@ -9,6 +9,7 @@ class StdBench(ConanFile):
 
     def requirements(self):
         self.requires("gcc/12.2.0")
+        self.requires("benchmark/1.9.0")
 
     def layout(self):
         cmake_layout(self)
