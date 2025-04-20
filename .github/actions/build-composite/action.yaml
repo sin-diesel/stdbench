@@ -33,5 +33,7 @@ runs:
       conan install . -s compiler.cppstd=17 -s compiler.version=11
       source build/Release/generators/conanbuild.sh
       pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
+      cmake --preset conan-release
+      cmake --build build/Release
     shell: bash
 
