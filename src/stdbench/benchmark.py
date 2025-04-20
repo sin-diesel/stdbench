@@ -1,37 +1,15 @@
-from stdbench.renderers import Renderer
+import os
+from jinja2 import Environment
+from pathlib import Path
 
 
 class Benchmark:
-    def __init__(
-        self,
-        *,
-        benchmark_renderer: Renderer,
-        policy_renderer: Renderer,
-        inputs_renderer: Renderer,
-        predicate_renderer: Renderer,
-    ) -> None:
-        self._renderers = (benchmark_renderer, policy_renderer, inputs_renderer, predicate_renderer)
+    def __init__(self, *, env: Environment, template: str, output_dir: Path) -> None:
+        self._env = env
+        self._template = env.get_template(template)
+        self._output_dir = output_dir
 
-    def render(self) -> None:
-        output: str = """
-#include <algorithm>
-#include <execution>
-#include <numeric>
-
-#include <benchmark/benchmark.h>
-
-{{ function_signature }} {
- {{ setup }}
-
- for (auto _: state) {
-   {{ name }}({{ policy }} {{ first }} {{ last }} {{ size }} {{ s_range }} {{ d_first }} {{ unary_pred }} {{ binary_pred }});
-   }
-}
-
-{{ benchmark_register }};
-
-{{ main }};
-"""
-        for renderer in self._renderers:
-            output = renderer.render(output)
-        return output
+    def generate(self, name: str, **params: str) -> None:
+        os.makedirs(self._output_dir, exist_ok=True)
+        benchmark_path = self._output_dir / f"{name}.cpp"
+        benchmark_path.write_text(self._template.render(name=name, **params))
