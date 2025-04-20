@@ -1,0 +1,25 @@
+{% extends "benchmark.jinja" %}
+{% block includes %}
+{{ super() }}
+
+#include <algorithm>
+#include <execution>
+#include <numeric>
+{% endblock %}
+
+{% block benhcmark_function %}
+{{ super () }}
+  {% block setup %}
+  {{ src_container }}<{{T}}> src_container({{ size }});
+
+  {% endblock %}
+  {% block init_container %}
+  {{ super () }}
+  std::iota(from_container.begin(), from_container.end(), 0);
+  {% endblock %}
+
+  {% block benchmark %}
+  std::{{ name }}(src_container.begin(), src_container.end(), {{ func }});
+  {% endblock %}
+
+{% endblock %}
