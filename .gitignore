@@ -167,4 +167,5 @@ a.out
 *.elf
 sources/
 artifacts/
+benchmarks/
 

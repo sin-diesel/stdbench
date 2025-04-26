@@ -1,6 +1,9 @@
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
-from stdbench.benchmark import Benchmark
+
+from stdbench.benchmark import Benchmark, BenchGenerator
+
+_repo_root = Path(__file__).parent.parent
 
 def test_benchmarks():
     env = Environment(loader=FileSystemLoader("templates"))
@@ -25,3 +28,8 @@ def test_benchmarks():
     find_if = Benchmark(name="find_if", env=env, template="input_range.jinja", output_dir=Path("benchmarks"))
     find_if.generate(src_container="std::vector", T="int", size=1000, func="[](int i) { return i % 2 == 0; }")
 
+
+def test_benchmarks_config():
+    config_path = _repo_root / "tests" / "config.yaml"
+    generator = BenchGenerator(config_path)
+    generator.generate()

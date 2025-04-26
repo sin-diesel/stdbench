@@ -1,0 +1,7 @@
+name: ["any_of", "all_of"]
+template: "${REPO_ROOT}/templates/input_range.jinja"
+type: ["int", "double"]
+policy: ["par", "par_unseq"]
+size: ["1000", "2000", "3000"]
+func: ["[](int i) { return i % 2 == 0; }", "[](int i) { return i + 2 == 0; }"]
+
