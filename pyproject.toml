@@ -10,7 +10,7 @@ dependencies = [
     "flake8==7.1.1",
     "black==24.10.0",
     "pytest==8.3.4",
-    "envyaml==1.10.211231"
+    "pyyaml==6.0.2"
 ]
 requires-python = "==3.12"
 readme = "README.md"

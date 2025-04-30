@@ -4,6 +4,7 @@ project(stdbench)
 find_package(benchmark REQUIRED)
 
 file(GLOB benchmarks "benchmarks/*.cpp")
+enable_testing()
 foreach(benchmark ${benchmarks})
     get_filename_component(test_name ${benchmark} NAME_WE)
     add_executable(${test_name} ${benchmark})

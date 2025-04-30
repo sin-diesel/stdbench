@@ -168,4 +168,5 @@ a.out
 sources/
 artifacts/
 benchmarks/
-
+Testing/
+CMakeUserPresets.json

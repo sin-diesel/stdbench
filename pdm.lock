@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:6819c33c52e2c6a0bfdd687634cad7a960959bc8b9006603f08d9a25cb9ec64b"
+content_hash = "sha256:27e2e798f4c165a5f9a98c3a4b9f6b6f59923c7127648d5e780a81f3495ac46a"
 
 [[metadata.targets]]
 requires_python = "==3.12"
@@ -126,20 +126,6 @@ marker = "platform_system == \"Linux\" or platform_system == \"FreeBSD\""
 files = [
     {file = "distro-1.8.0-py3-none-any.whl", hash = "sha256:99522ca3e365cac527b44bde033f64c6945d90eb9f769703caaec52b09bbd3ff"},
     {file = "distro-1.8.0.tar.gz", hash = "sha256:02e111d1dc6a50abb8eed6bf31c3e48ed8b0830d1ea2a1b78c61765c2513fdd8"},
-]
-
-[[package]]
-name = "envyaml"
-version = "1.10.211231"
-requires_python = ">=2.7"
-summary = "Simple YAML configuration file parser with easy access for structured data"
-groups = ["default"]
-dependencies = [
-    "PyYAML",
-]
-files = [
-    {file = "envyaml-1.10.211231-py2.py3-none-any.whl", hash = "sha256:8d7a7a6be12587cc5da32a587067506b47b849f4643981099ad148015a72de52"},
-    {file = "envyaml-1.10.211231.tar.gz", hash = "sha256:88f8a076159e3c317d3450a5f404132b6ac91aecee4934ea72eac65f911f1244"},
 ]
 
 [[package]]
