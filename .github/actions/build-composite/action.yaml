@@ -35,5 +35,6 @@ runs:
       pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
       cmake --preset conan-release
       cmake --build build/Release
+      ctest --test-dir build/Release
     shell: bash
 

@@ -167,4 +167,6 @@ a.out
 *.elf
 sources/
 artifacts/
-
+benchmarks/
+Testing/
+CMakeUserPresets.json
