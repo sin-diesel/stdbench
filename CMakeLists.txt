@@ -9,6 +9,6 @@ foreach(benchmark ${benchmarks})
     get_filename_component(test_name ${benchmark} NAME_WE)
     add_executable(${test_name} ${benchmark})
     target_link_libraries(${test_name} benchmark::benchmark)
-    add_test(NAME ${test_name} COMMAND ${test_name})
+    add_test(NAME ${test_name} COMMAND ${test_name} --benchmark_out_format=json --benchmark_out=${test_name}.json)
 endforeach()
 
