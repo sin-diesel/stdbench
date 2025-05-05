@@ -11,7 +11,14 @@ class Benchmark:
 
     def generate(self, template: Template, output_dir: Path) -> None:
         os.makedirs(output_dir, exist_ok=True)
-        benchmark_path = output_dir / f"{self._params['name']}.cpp"
+
+        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "="]
+        bench_name = ("_".join(self._params.values())).replace(" ", "_")
+        bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
+        bench_name = bench_name.replace("%", "div")
+        bench_name = bench_name.replace("+", "plus")
+
+        benchmark_path = output_dir / f"{bench_name}.cpp"
         benchmark_path.write_text(template.render(**self._params))
 
 

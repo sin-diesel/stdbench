@@ -11,15 +11,14 @@
 {{ super () }}
   {% block setup %}
   {{ src_container }}<{{T}}> src_container({{ size }});
-
-  {% endblock %}
   {% block init_container %}
-  {{ super () }}
-  std::iota(from_container.begin(), from_container.end(), 0);
+    {{ super () }}
+    std::iota(src_container.begin(), src_container.end(), 0);
+    {% endblock %}
   {% endblock %}
 
   {% block benchmark %}
-  std::{{ name }}(src_container.begin(), src_container.end(), {{ func }});
+  std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ func }});
   {% endblock %}
 
 {% endblock %}
