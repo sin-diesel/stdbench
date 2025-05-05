@@ -1,5 +1,5 @@
 {% extends "input_range.jinja" %}
 {% block benchmark %}
-  std::{{ name }}(src_container.begin(), {{ last }}, {{ func }});
+std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), {{ last }}, {{ func }});
 {% endblock %}
 
