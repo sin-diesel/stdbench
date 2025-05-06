@@ -6,7 +6,7 @@ runs:
       curl -sSLO https://pdm-project.org/install-pdm.py
       curl -sSL https://pdm-project.org/install-pdm.py.sha256 | shasum -a 256 -c -
       python3 install-pdm.py
-      pdm install
+      pdm sync
     shell: bash
 
   - name: Lint

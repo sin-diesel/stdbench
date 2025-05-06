@@ -6,7 +6,7 @@ Python library designed for generating C++ standard library algorithms benchmark
 curl -sSL https://pdm-project.org/install-pdm.py | python3 -
 
 # Running tests
-pdm install
+pdm sync
 source .venv/bin/activate
 conan install . -s compiler.cppstd=17 -s compiler.version=11 
 cmake --preset conan-release
