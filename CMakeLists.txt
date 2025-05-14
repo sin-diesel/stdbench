@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.23.0)
 project(stdbench)
 
-include("benchmarks/cmake_env_vars.cmake")
+include("build/benchmarks/cmake_env_vars.cmake")
 
 find_package(benchmark REQUIRED)
 
-file(GLOB benchmarks "benchmarks/*.cpp")
+file(GLOB benchmarks "build/benchmarks/*.cpp")
 enable_testing()
 foreach (compiler ${COMPILER})
     foreach (compiler_opts ${COMPILER_OPTS})
         foreach(benchmark ${benchmarks})
-            #set(CMAKE_CXX_COMPILER ${compiler})
-            #add_compile_options(${compiler_opts})
+            set(CMAKE_CXX_COMPILER ${compiler})
+            add_compile_options(${compiler_opts})
             get_filename_component(test_name ${benchmark} NAME_WE)
             set(test_name "${test_name}_${compiler}_${compiler_opts}") 
             add_executable(${test_name} ${benchmark})

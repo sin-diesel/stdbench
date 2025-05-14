@@ -11,7 +11,7 @@ runs:
 
   - name: Lint
     run: |
-      PROJECT_SRC_REL="src/stdbench" PROJECT_SETUP="setup.py" ./lint.sh
+      PROJECT_SRC_REL="src/stdbench" ./lint.sh
     shell: bash
 
   - name: PDM install
@@ -32,7 +32,7 @@ runs:
       conan install . -s compiler.cppstd=17 -s compiler.version=11
       pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
       cmake --preset conan-release
-      cmake --build build/Release
-      ctest --test-dir build/Release
+      cmake --build build
+      ctest --test-dir build
     shell: bash
 

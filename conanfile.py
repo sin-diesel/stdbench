@@ -13,4 +13,6 @@ class StdBench(ConanFile):
 
     def layout(self):
         cmake_layout(self)
+        self.folders.build = "build"
+        self.folders.generators = "build"
 
