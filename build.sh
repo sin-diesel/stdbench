@@ -12,3 +12,7 @@ for COMPILER in $COMPILERS; do
   cmake --build build/$COMPILER
 done
 
+for COMPILER in $COMPILERS; do
+  ctest --test-dir build/$COMPILER
+done
+
