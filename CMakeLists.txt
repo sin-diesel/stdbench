@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23.0)
 project(stdbench)
 
-include("build/benchmarks/cmake_env_vars.cmake")
+include("build/benchmarks/compiler_opts.cmake")
 
 find_package(benchmark REQUIRED)
 

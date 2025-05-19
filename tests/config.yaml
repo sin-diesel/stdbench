@@ -6,6 +6,5 @@ src_container: ["std::vector"]
 T: ["int", "double"]
 func: ["[](int i) { return i % 2 == 0; }", "[](int i) { return i + 2 == 0; }"]
 
-compiler: ["clang++-22", "g++"]
 compiler_opts: ["-O2"]
 
