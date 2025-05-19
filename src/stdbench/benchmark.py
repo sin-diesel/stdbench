@@ -8,7 +8,6 @@ from pathlib import Path
 
 
 CMAKE_ENV_VARS_TEMPLATE = """
-set(COMPILER {})
 set(COMPILER_OPTS {})
 """
 
@@ -39,12 +38,10 @@ class BenchGenerator:
         os.mkdir(self._output_dir)
 
     def _generate_env(self, config: dict[str, str | list[str]]) -> None:
-        compilers = " ".join(config["compiler"])
         compiler_opts = " ".join(config["compiler_opts"])
-        env_vars_path = self._output_dir / "cmake_env_vars.cmake"
+        env_vars_path = self._output_dir / "compiler_opts.cmake"
 
-        env_vars_path.write_text(CMAKE_ENV_VARS_TEMPLATE.format(compilers, compiler_opts))
-        del config["compiler"]
+        env_vars_path.write_text(CMAKE_ENV_VARS_TEMPLATE.format(compiler_opts))
         del config["compiler_opts"]
 
     def generate(self) -> None:
