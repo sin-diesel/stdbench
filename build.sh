@@ -12,4 +12,3 @@ for COMPILER in $COMPILERS; do
   cmake --build build/$COMPILER
 done
 
-
