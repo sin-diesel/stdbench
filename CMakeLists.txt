@@ -5,16 +5,24 @@ include("build/benchmarks/compiler_opts.cmake")
 
 find_package(benchmark REQUIRED)
 
-file(GLOB benchmarks "build/benchmarks/*.cpp")
+file(GLOB BENCHMARKS "build/benchmarks/*.cpp")
 enable_testing()
-foreach (compiler_opts ${COMPILER_OPTS})
-    foreach(benchmark ${benchmarks})
-       get_filename_component(test_name ${benchmark} NAME_WE)
-       set(test_name "${test_name}_${compiler_opts}") 
-       add_executable(${test_name} ${benchmark})
-       target_compile_options(${test_name} PRIVATE ${compiler_opts})
-       target_link_libraries(${test_name} benchmark::benchmark)
-       add_test(NAME ${test_name} COMMAND ${test_name} --benchmark_out_format=json --benchmark_out=${test_name}.json)
+foreach (COMPILER_OPTS ${COMPILER_OPTS})
+   foreach(BENCHMARk ${BENCHMARKS})
+       get_filename_component(test_name ${BENCHMARK} NAME_WE)
+       set(test_name "${TEST_NAME}_${COMPILER_OPTS}") 
+       add_executable(${TEST_NAME} ${BENCHMARK})
+       target_compile_options(${TEST_NAME} PRIVATE ${COMPILER_OPTS})
+       target_link_libraries(${TEST_NAME} benchmark::benchmark)
+       add_test(NAME
+          ${TEST_NAME}
+          COMMAND
+          ${TEST_NAME}
+          --benchmark_out_format=json
+          --benchmark_out=${TEST_NAME}.json
+          --benchmark_context=compiler=${CXX}
+          --benchmark_context=compiler_opts=${COMPILER_OPTS}
+       )
     endforeach()
 endforeach()
 

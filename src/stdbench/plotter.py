@@ -28,7 +28,6 @@ class Plotter:
 
 #    def _obtain_cpu_time(self, name: str, bench_params: dict[str, str]) -> list[float]:
 #        cpu_time = [measurement.cpu_time for measurement in self._measurements if all(fixed_axes[axe] == asdict(measurement)[axe] for axe in fixed_axes.keys())]
-#        breakpoint()
 
         # gnuplot...
 
