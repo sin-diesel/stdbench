@@ -26,6 +26,7 @@ int main(int argc, char** argv) {
     benchmark::AddCustomContext("src_container", "{{ src_container }}");
     benchmark::AddCustomContext("T", "{{ T }}");
     benchmark::AddCustomContext("func", "{{ func }}");
+    benchmark::AddCustomContext("size", "{{ size }}");
 
     benchmark::Initialize(&argc, argv);
     benchmark::RunSpecifiedBenchmarks();

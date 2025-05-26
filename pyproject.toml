@@ -26,7 +26,3 @@ distribution = true
 [tool.black]
 line_length = "120"
 
-[tool.flake8]
-show_source = true 
-statistics = true
-

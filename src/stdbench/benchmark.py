@@ -16,6 +16,14 @@ set(COMPILER_OPTS {})
 @dataclass(kw_only=True)
 class Measurement:
     name: str
+    T: str
+    policy: str
+    size: str
+    src_container: str
+    func: str
+    compiler: str
+    compiler_opts: str
+
     time_unit: str
     cpu_time: float
     real_time: float

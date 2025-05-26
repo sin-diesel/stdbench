@@ -7,6 +7,8 @@ find_package(benchmark REQUIRED)
 
 file(GLOB BENCHMARKS "build/benchmarks/*.cpp")
 enable_testing()
+get_filename_component(BASE_COMPILER_NAME ${CMAKE_CXX_COMPILER} NAME_WE)
+
 foreach (COMPILER_OPT ${COMPILER_OPTS})
    foreach(BENCHMARK ${BENCHMARKS})
        get_filename_component(TEST_NAME ${BENCHMARK} NAME_WE)
@@ -20,7 +22,7 @@ foreach (COMPILER_OPT ${COMPILER_OPTS})
           ${TEST_NAME}
           --benchmark_out_format=json
           --benchmark_out=${TEST_NAME}.json
-          --benchmark_context=compiler=${CXX}
+          --benchmark_context=compiler=${BASE_COMPILER_NAME}
           --benchmark_context=compiler_opts=${COMPILER_OPTS}
        )
     endforeach()
