@@ -8,6 +8,7 @@ runs:
       python3 install-pdm.py
       pdm sync
       sudo apt install clang-19
+      sudo apt install gnuplot
     shell: bash
 
   - name: Lint
@@ -31,7 +32,8 @@ runs:
     run: |
       source .venv/bin/activate
       conan install . -s compiler.cppstd=17 -s compiler.version=11
-      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
+      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py -k "test_benchmarks_generation"
       COMPILERS="g++ clang++-19" ./build.sh
+      ./test.sh
     shell: bash
 

@@ -1,0 +1,37 @@
+{% extends "base.jinja" %}
+{% block includes %}
+#include <benchmark/benchmark.h>
+{% endblock %}
+
+{% block benchmark_function %}
+  static void {{name}}(benchmark::State& state) {
+  {% block setup %}
+    {% block init_container %}
+    {% endblock %}
+  {% endblock %}
+  {% block loop %}
+  for (auto _: state) {
+    {% block benchmark %}
+    {% endblock %}
+  }
+  {% endblock %}
+}
+{% endblock %}
+
+{% block bench_register %}
+BENCHMARK({{name}});
+int main(int argc, char** argv) {
+    benchmark::AddCustomContext("name", "{{ name }}");
+    benchmark::AddCustomContext("policy", "{{ policy }}");
+    benchmark::AddCustomContext("src_container", "{{ src_container }}");
+    benchmark::AddCustomContext("T", "{{ T }}");
+    benchmark::AddCustomContext("func", "{{ func }}");
+    benchmark::AddCustomContext("size", "{{ size }}");
+
+    benchmark::Initialize(&argc, argv);
+    benchmark::RunSpecifiedBenchmarks();
+    benchmark::Shutdown();
+    return 0;
+}
+{% endblock %}
+

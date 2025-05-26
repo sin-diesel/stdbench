@@ -4,12 +4,30 @@ import shutil
 
 from itertools import product
 from jinja2 import Environment, Template, FileSystemLoader
+from dataclasses import dataclass
 from pathlib import Path
 
 
 CMAKE_ENV_VARS_TEMPLATE = """
 set(COMPILER_OPTS {})
 """
+
+
+@dataclass(kw_only=True)
+class Measurement:
+    name: str
+    T: str
+    policy: str
+    size: str
+    src_container: str
+    func: str
+    compiler: str
+    compiler_opts: str
+
+    time_unit: str
+    cpu_time: float
+    real_time: float
+    iterations: int
 
 
 class Benchmark:
@@ -37,6 +55,11 @@ class BenchGenerator:
             shutil.rmtree(self._output_dir)
         os.mkdir(self._output_dir)
 
+        self._env = Environment(loader=FileSystemLoader(self._templates_path))
+
+        with open(self._config_path, "r") as file:
+            self._config = yaml.safe_load(file)
+
     def _generate_env(self, config: dict[str, str | list[str]]) -> None:
         compiler_opts = " ".join(config["compiler_opts"])
         env_vars_path = self._output_dir / "compiler_opts.cmake"
@@ -44,19 +67,18 @@ class BenchGenerator:
         env_vars_path.write_text(CMAKE_ENV_VARS_TEMPLATE.format(compiler_opts))
         del config["compiler_opts"]
 
-    def generate(self) -> None:
-        env = Environment(loader=FileSystemLoader(self._templates_path))
+    def benchmark_names(self) -> list[str]:
+        return self._config["name"]
 
-        with open(self._config_path, "r") as file:
-            config = yaml.safe_load(file)
+    def generate(self) -> list[Benchmark]:
+        benchmarks: list[Benchmark] = []
+        template = self._env.get_template(self._config["template"])
+        del self._config["template"]
 
-        template = env.get_template(config["template"])
-        del config["template"]
-
-        self._generate_env(config)
+        self._generate_env(self._config)
 
         subconfigs = []
-        for key, value in config.items():
+        for key, value in self._config.items():
             subconfigs.append([{key: v} for v in value])
 
         for params in product(*subconfigs):
@@ -65,3 +87,6 @@ class BenchGenerator:
                 params_dict.update(field)
             benchmark = Benchmark(params_dict)
             benchmark.generate(template=template, output_dir=self._output_dir)
+            benchmarks.append(benchmark)
+
+        return benchmarks
