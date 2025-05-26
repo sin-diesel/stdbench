@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block benchmark_function %}
-  static void BM_{{name}}(benchmark::State& state) {
+  static void {{name}}(benchmark::State& state) {
   {% block setup %}
     {% block init_container %}
     {% endblock %}
@@ -15,11 +15,18 @@
     {% endblock %}
   }
   {% endblock %}
+  {% block context %}
+    benchmark::AddCustomContext("name", "{{ name }}");
+    benchmark::AddCustomContext("policy", "{{ policy }}");
+    benchmark::AddCustomContext("src_container", "{{ src_container }}");
+    benchmark::AddCustomContext("T", "{{ T }}");
+    benchmark::AddCustomContext("func", "{{ func }}");
+  {% endblock %}
 }
 {% endblock %}
 
 {% block bench_register %}
-BENCHMARK(BM_{{name}});
+BENCHMARK({{name}});
 BENCHMARK_MAIN();
 {% endblock %}
 
