@@ -67,9 +67,6 @@ class Plotter:
         x_s = x[idx]
         y_s = y[idx]
 
-        gp.plot((x_s, y_s, {'with': 'linespoints'}),
-            title=f'compiler: {compiler}',
-            xlabel='size, n',
-            ylabel='cpu_time, ns'
+        gp.plot(
+            (x_s, y_s, {"with": "linespoints"}), title=f"compiler: {compiler}", xlabel="size, n", ylabel="cpu_time, ns"
         )
-
