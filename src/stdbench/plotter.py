@@ -1,7 +1,8 @@
 import os
 import json
+import gnuplotlib as gp
+import numpy as np
 
-from pygnuplot import gnuplot
 from glob import glob
 from pathlib import Path
 from dataclasses import asdict
@@ -14,10 +15,6 @@ class Plotter:
     def __init__(self, build_folder: Path) -> None:
         self._build_folder = build_folder
         self._measurements = self._obtain_performance_measurements(build_folder, "clang++-19")
-        self._gp = gnuplot.Gnuplot()
-        self._gp('set xlabel "size"')
-        self._gp('set ylabel "cpu_time"')
-        self._gp("set grid")
 
     @staticmethod
     def _obtain_performance_measurements(build_folder: Path, compiler: str) -> list[Measurement]:
@@ -36,7 +33,7 @@ class Plotter:
                     name=benchmark["name"],
                     T=params["T"],
                     policy=params["policy"],
-                    size=params["size"],
+                    size=int(params["size"]),
                     src_container=params["src_container"],
                     func=params["func"],
                     compiler=params["compiler"],
@@ -64,5 +61,15 @@ class Plotter:
             and measurement.compiler_opts == compiler_opts
             and measurement.policy == policy
         ]
-        print(measurements)
+        x = np.array([measurement.size for measurement in measurements])
+        y = np.array([measurement.cpu_time for measurement in measurements])
+        idx = np.argsort(x)
+        x_s = x[idx]
+        y_s = y[idx]
+
+        gp.plot((x_s, y_s, {'with': 'linespoints'}),
+            title=f'compiler: {compiler}',
+            xlabel='size, n',
+            ylabel='cpu_time, ns'
+        )
 
