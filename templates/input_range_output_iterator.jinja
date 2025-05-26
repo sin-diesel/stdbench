@@ -1,4 +1,4 @@
-{% extends "benchmark.jinja" %}
+{% extends "googlebenchmark.jinja" %}
 {% block includes %}
 {{ super() }}
 
@@ -20,7 +20,8 @@
   {% endblock %}
 
   {% block benchmark %}
-    std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), std::back_inserter(dst_container));
+    auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), std::back_inserter(dst_container));
+    benchmark::DoNotOptimize(result);
   {% endblock %}
 
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends "input_range.jinja" %}
 {% block benchmark %}
-std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), {{ last }}, {{ func }});
+auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), {{ last }}, {{ func }});
+benchmark::DoNotOptimize(result);
 {% endblock %}
 

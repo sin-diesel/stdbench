@@ -15,18 +15,22 @@
     {% endblock %}
   }
   {% endblock %}
-  {% block context %}
-    benchmark::AddCustomContext("name", "{{ name }}");
-    benchmark::AddCustomContext("policy", "{{ policy }}");
-    benchmark::AddCustomContext("src_container", "{{ src_container }}");
-    benchmark::AddCustomContext("T", "{{ T }}");
-    benchmark::AddCustomContext("func", "{{ func }}");
-  {% endblock %}
 }
 {% endblock %}
 
 {% block bench_register %}
 BENCHMARK({{name}});
-BENCHMARK_MAIN();
+int main(int argc, char** argv) {
+    benchmark::AddCustomContext("name", "{{ name }}");
+    benchmark::AddCustomContext("policy", "{{ policy }}");
+    benchmark::AddCustomContext("src_container", "{{ src_container }}");
+    benchmark::AddCustomContext("T", "{{ T }}");
+    benchmark::AddCustomContext("func", "{{ func }}");
+
+    benchmark::Initialize(&argc, argv);
+    benchmark::RunSpecifiedBenchmarks();
+    benchmark::Shutdown();
+    return 0;
+}
 {% endblock %}
 
