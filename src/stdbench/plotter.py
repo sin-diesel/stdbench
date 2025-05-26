@@ -1,8 +1,7 @@
 import os
 import json
 
-from Gnuplot import Gnuplot
-from Gnuplot import PlotItems
+from pygnuplot import gnuplot
 from glob import glob
 from pathlib import Path
 from dataclasses import asdict
@@ -15,7 +14,7 @@ class Plotter:
     def __init__(self, build_folder: Path) -> None:
         self._build_folder = build_folder
         self._measurements = self._obtain_performance_measurements(build_folder, "clang++-19")
-        self._gp = Gnuplot.Gnuplot()
+        self._gp = gnuplot.Gnuplot()
         self._gp('set xlabel "size"')
         self._gp('set ylabel "cpu_time"')
         self._gp("set grid")
@@ -70,4 +69,3 @@ class Plotter:
         # plot_item = PlotItems.Data(x, y, with_="lines", title="test")
         # self._gp.plot(plot_item)
 
-        self._gp.hardcopy("output.png", terminal="png")

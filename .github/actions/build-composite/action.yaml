@@ -8,6 +8,7 @@ runs:
       python3 install-pdm.py
       pdm sync
       sudo apt install clang-19
+      sudo apt install gnuplot
     shell: bash
 
   - name: Lint
