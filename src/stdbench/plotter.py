@@ -66,6 +66,3 @@ class Plotter:
         ]
         print(measurements)
 
-        # plot_item = PlotItems.Data(x, y, with_="lines", title="test")
-        # self._gp.plot(plot_item)
-

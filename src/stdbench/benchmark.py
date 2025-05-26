@@ -33,7 +33,6 @@ class Measurement:
 class Benchmark:
     def __init__(self, params) -> None:
         self._params = params
-        breakpoint()
 
     def generate(self, template: Template, output_dir: Path) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "="]
