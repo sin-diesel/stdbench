@@ -21,3 +21,12 @@ def test_benchmarks_plotting():
     plotter = Plotter(output_folder)
     plotter.plot(name="all_of", T="int", src_container="std::vector", policy="par_unseq", compiler_opts="-O2", func="[](int i) { return i % 2 == 0; }", compiler="clang++-19")
 
+def test_benchmarks_plot_all():
+    config_path = _repo_root / "tests" / "config.yaml"
+    bench_generator = BenchGenerator(config_path, templates_path=_repo_root / "templates")
+    benchmarks = bench_generator.generate()
+
+    output_folder = _repo_root / "build"
+    plotter = Plotter(output_folder)
+    plotter.plot_all(bench_generator.benchmark_configs())
+
