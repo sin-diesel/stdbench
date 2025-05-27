@@ -170,3 +170,4 @@ artifacts/
 benchmarks/
 Testing/
 CMakeUserPresets.json
+.~lock*
