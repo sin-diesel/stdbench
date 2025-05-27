@@ -70,6 +70,9 @@ class BenchGenerator:
     def benchmark_names(self) -> list[str]:
         return self._config["name"]
 
+    def subconfigs(self) -> list[dict]:
+        return self._subconfigs
+
     def generate(self) -> list[Benchmark]:
         benchmarks: list[Benchmark] = []
         template = self._env.get_template(self._config["template"])
@@ -81,7 +84,9 @@ class BenchGenerator:
         for key, value in self._config.items():
             subconfigs.append([{key: v} for v in value])
 
-        for params in product(*subconfigs):
+        breakpoint()
+        self._subconfigs = product(*subconfigs)
+        for params in self._subconfigs:
             params_dict = {}
             for field in params:
                 params_dict.update(field)

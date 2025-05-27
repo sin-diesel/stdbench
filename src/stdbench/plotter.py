@@ -70,3 +70,8 @@ class Plotter:
         gp.plot(
             (x_s, y_s, {"with": "linespoints"}), title=f"compiler: {compiler}", xlabel="size, n", ylabel="cpu_time, ns"
         )
+
+    def plot_all(self, subconfigs: list[dict]) -> None:
+        for subconfig in subconfigs:
+            self.plot(name=subconfig["name"], T=subconfig["T"], src_container=subconfig["src_container"], policy=subconfig["policy"], func=subconfig["func"])
+        breakpoint()

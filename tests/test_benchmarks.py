@@ -20,4 +20,6 @@ def test_benchmarks_plotting():
     output_folder = _repo_root / "build"
     plotter = Plotter(output_folder)
     plotter.plot(name="all_of", T="int", src_container="std::vector", policy="par_unseq", compiler_opts="-O2", func="[](int i) { return i % 2 == 0; }", compiler="clang++-19")
+    breakpoint()
+    plotter.plot_all(bench_generator.subconfigs())
 
