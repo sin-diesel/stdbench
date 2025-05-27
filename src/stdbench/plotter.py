@@ -47,6 +47,28 @@ class Plotter:
 
         return measurements
 
+    def _plot_data(
+        self, *, name: str, T: str, src_container: str, policy: str, func: str, compiler: str, compiler_opts: str
+    ):
+        measurements = [
+            measurement
+            for measurement in self._measurements
+            if measurement.name == name
+            and measurement.T == T
+            and measurement.src_container == src_container
+            and measurement.func == func
+            and measurement.compiler == compiler
+            and measurement.compiler_opts == compiler_opts
+            and measurement.policy == policy
+        ]
+        x = np.array([measurement.size for measurement in measurements])
+        y = np.array([measurement.cpu_time for measurement in measurements])
+        idx = np.argsort(x)
+        x_s = x[idx]
+        y_s = y[idx]
+
+        return x_s, y_s
+
     def plot(
         self, *, name: str, T: str, src_container: str, policy: str, func: str, compiler: str, compiler_opts: str
     ) -> None:
@@ -71,7 +93,26 @@ class Plotter:
             (x_s, y_s, {"with": "linespoints"}), title=f"compiler: {compiler}", xlabel="size, n", ylabel="cpu_time, ns"
         )
 
-    def plot_all(self, subconfigs: list[dict]) -> None:
-        for subconfig in subconfigs:
-            self.plot(name=subconfig["name"], T=subconfig["T"], src_container=subconfig["src_container"], policy=subconfig["policy"], func=subconfig["func"])
-        breakpoint()
+    def plot_all(self, configs: list[dict]) -> None:
+        compilers = ["clang++-19"]
+        compiler_opts = ["-O2"]
+        compiler = compilers[0]
+        opts = compiler_opts[0]
+        plots: list[tuple] = []
+        for config in configs:
+            values = {list(mapping.keys())[0]: list(mapping.values())[0] for mapping in config}
+            x, y = self._plot_data(
+                name=values["name"],
+                T=values["T"],
+                src_container=values["src_container"],
+                policy=values["policy"],
+                func=values["func"],
+                compiler=compiler,
+                compiler_opts=opts,
+            )
+            plots.append((x, y))
+
+        gp.plot(
+            *plots, title=f"compiler: {compiler}", xlabel="size, n", ylabel="cpu_time, ns"
+        )
+

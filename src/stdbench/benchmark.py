@@ -1,6 +1,7 @@
 import os
 import yaml
 import shutil
+import copy
 
 from itertools import product
 from jinja2 import Environment, Template, FileSystemLoader
@@ -50,6 +51,7 @@ class BenchGenerator:
         self._config_path = config_path
         self._templates_path = templates_path
         self._output_dir = output_dir
+        self._subconfigs = []
 
         if self._output_dir.exists():
             shutil.rmtree(self._output_dir)
@@ -70,8 +72,8 @@ class BenchGenerator:
     def benchmark_names(self) -> list[str]:
         return self._config["name"]
 
-    def subconfigs(self) -> list[dict]:
-        return self._subconfigs
+    def benchmark_configs(self) -> list[dict]:
+        return self._benchmark_configs
 
     def generate(self) -> list[Benchmark]:
         benchmarks: list[Benchmark] = []
@@ -84,8 +86,17 @@ class BenchGenerator:
         for key, value in self._config.items():
             subconfigs.append([{key: v} for v in value])
 
-        breakpoint()
-        self._subconfigs = product(*subconfigs)
+        benchmark_config = copy.deepcopy(self._config)
+        benchmark_configs = []
+        del benchmark_config["size"]
+
+        for key, value in benchmark_config.items():
+            benchmark_configs.append([{key: v} for v in value])
+
+        self._benchmark_configs = list(product(*benchmark_configs))
+
+        self._subconfigs = list(product(*subconfigs))
+
         for params in self._subconfigs:
             params_dict = {}
             for field in params:
