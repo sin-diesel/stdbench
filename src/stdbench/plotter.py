@@ -99,6 +99,7 @@ class Plotter:
         compiler = compilers[0]
         opts = compiler_opts[0]
         plots: list[tuple] = []
+        # name = ""
         for config in configs:
             values = {list(mapping.keys())[0]: list(mapping.values())[0] for mapping in config}
             x, y = self._plot_data(
@@ -110,9 +111,15 @@ class Plotter:
                 compiler=compiler,
                 compiler_opts=opts,
             )
-            plots.append((x, y))
+            policy = values["policy"]
+            # name = values["name"]
+            # underscore_idx = policy.index("_")
+            # raw_policy = policy[:underscore_idx] + "\\" + policy[underscore_idx:]
+            plots.append((x, y, {"legend": policy.replace("_", "-")}))
 
         gp.plot(
-            *plots, title=f"compiler: {compiler}", xlabel="size, n", ylabel="cpu_time, ns"
+            *plots,
+            title=f"name: count_if, compiler: {compiler}, compiler opts: -O2",
+            xlabel="size, n",
+            ylabel="cpu_time, ns",
         )
-
