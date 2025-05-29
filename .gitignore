@@ -171,3 +171,4 @@ benchmarks/
 Testing/
 CMakeUserPresets.json
 .~lock*
+presentation/
