@@ -50,11 +50,16 @@ class Plotter:
     def _plot_data(
         self, *, name: str, T: str, src_container: str, policy: str, func: str, compiler: str, compiler_opts: str
     ):
-        breakpoint()
         measurements = [
             measurement
             for measurement in self._measurements
-            if measurement.name == name and measurement.T == T and measurement.src_container == src_container and measurement.func == func and measurement.compiler == compiler and measurement.compiler_opts == compiler_opts and measurement.policy == policy
+            if measurement.name == name
+            and measurement.T == T
+            and measurement.src_container == src_container
+            and measurement.func == func
+            and measurement.compiler == compiler
+            and measurement.compiler_opts == compiler_opts
+            and measurement.policy == policy
         ]
         x = np.array([measurement.size for measurement in measurements])
         y = np.array([measurement.cpu_time for measurement in measurements])
@@ -94,7 +99,7 @@ class Plotter:
         compiler = compilers[0]
         opts = compiler_opts[0]
         plots: list[tuple] = []
-        name = ""
+        # name = ""
         for config in configs:
             values = {list(mapping.keys())[0]: list(mapping.values())[0] for mapping in config}
             x, y = self._plot_data(
@@ -107,12 +112,14 @@ class Plotter:
                 compiler_opts=opts,
             )
             policy = values["policy"]
-            name = values["name"]
-            #underscore_idx = policy.index("_")
-            #raw_policy = policy[:underscore_idx] + "\\" + policy[underscore_idx:]
-            plots.append((x, y, {'legend': policy.replace("_", "-")}))
+            # name = values["name"]
+            # underscore_idx = policy.index("_")
+            # raw_policy = policy[:underscore_idx] + "\\" + policy[underscore_idx:]
+            plots.append((x, y, {"legend": policy.replace("_", "-")}))
 
         gp.plot(
-            *plots, title=f"name: count_if, compiler: {compiler}, compiler opts: -O2", xlabel="size, n", ylabel="cpu_time, ns"
+            *plots,
+            title=f"name: count_if, compiler: {compiler}, compiler opts: -O2",
+            xlabel="size, n",
+            ylabel="cpu_time, ns",
         )
-
