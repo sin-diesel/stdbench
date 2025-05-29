@@ -36,7 +36,7 @@ class Benchmark:
         self._params = params
 
     def generate(self, template: Template, output_dir: Path) -> None:
-        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "="]
+        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&"]
         bench_name = ("_".join(self._params.values())).replace(" ", "_")
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")

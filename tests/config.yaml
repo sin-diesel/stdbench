@@ -1,10 +1,10 @@
-name: ["all_of"]
+name: ["count_if"]
 template: "input_range.jinja"
 policy: ["par", "par_unseq", "seq"]
 size: ["1000", "2000", "3000", "10000", "10000", "20000", "30000", "100000", "500000"]
 src_container: ["std::vector"]
 T: ["int"]
-func: ["[](int i) { return i == 0; }"]
+func: ["[](int i) { return i % 4 == 0; }"]
 
 compiler_opts: ["-O2"]
 

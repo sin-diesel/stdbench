@@ -113,6 +113,6 @@ class Plotter:
             plots.append((x, y, {'legend': policy.replace("_", "-")}))
 
         gp.plot(
-            *plots, title=f"name: all of, compiler: {compiler}, compiler opts: -O2", xlabel="size, n", ylabel="cpu_time, ns"
+            *plots, title=f"name: count_if, compiler: {compiler}, compiler opts: -O2", xlabel="size, n", ylabel="cpu_time, ns"
         )
 
