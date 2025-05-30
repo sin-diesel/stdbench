@@ -8,6 +8,8 @@ from jinja2 import Environment, Template, FileSystemLoader
 from dataclasses import dataclass
 from pathlib import Path
 
+from stdbench.config import Config
+
 
 CMAKE_ENV_VARS_TEMPLATE = """
 set(COMPILER_OPTS {})
@@ -48,7 +50,8 @@ class Benchmark:
 
 class BenchGenerator:
     def __init__(self, config_path: Path, templates_path: Path, output_dir=Path("build") / "benchmarks") -> None:
-        self._config_path = config_path
+        self._config = Config(config_path)
+
         self._templates_path = templates_path
         self._output_dir = output_dir
         self._subconfigs = []
@@ -97,8 +100,11 @@ class BenchGenerator:
 
         self._subconfigs = list(product(*subconfigs))
 
-        for params in self._subconfigs:
-            params_dict = {}
+        transposed_bench_configs = self._config.benchmark_config(transposed=True)
+        cartesian_product = list(product(*transposed_bench_configs))
+
+        for config in cartesian_product:
+            
             for field in params:
                 params_dict.update(field)
             benchmark = Benchmark(params_dict)
