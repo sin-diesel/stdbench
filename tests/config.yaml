@@ -3,12 +3,12 @@ template: "input_range.jinja"
 benchmark:
   name: ["count_if"]
   policy: ["par", "par_unseq", "seq"]
-  size: ["1000", "2000", "3000", "10000", "10000", "20000", "30000", "100000", "500000"]
-  src_container: ["std::vector"]
-  T: ["int"]
-  func: ["[](int i) { return i % 4 == 0; }"]
+  container: ["std::vector"]
+  type: ["int"]
+  predicate: ["[](int i) { return i % 4 == 0; }"]
 
 environment:
   compiler: ["clang++19"]
   compiler_opts: ["-O2"]
+  size: ["1000", "2000", "3000", "10000", "10000", "20000", "30000", "100000", "500000"]
 
