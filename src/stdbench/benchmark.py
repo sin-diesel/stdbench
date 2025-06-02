@@ -7,6 +7,7 @@ from itertools import product
 from jinja2 import Environment, Template, FileSystemLoader
 from dataclasses import dataclass
 from pathlib import Path
+
 from stdbench.config import Config, NormalizedConfig
 
 
@@ -54,19 +55,6 @@ class Benchmark:
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
         benchmark_path.write_text(self._template.render(**self._params))
 
-class CMakeHints:
-    def __init__(self, path: Path) -> None:
-        self._hints: list[tuple[str, str]] = []
-        self._path = path
-
-    def add(self, var: str, value: str) -> None:
-        if not isinstance(var, str) or not isinstance(value, list):
-            raise ValueError("Incorrect config, all keys must be str, all values must be lists")
-        self._hints.append((var, value))
-
-    def generate(self) -> None:
-        hints_text = "".join([f"SET(\"{hint[0]}\" {' '.join(hint[1])})\n" for hint in self._hints])
-        self._path.write_text(hints_text)
 
 class BenchGenerator:
     def __init__(self, *, config_path: Path, output_dir: Path, templates_path: Path) -> None:
@@ -81,11 +69,6 @@ class BenchGenerator:
         self._env = Environment(loader=FileSystemLoader(self._templates_path))
         self._template = self._env.get_template(self._config.template)
 
-    def _generate_cmake_hints(self) -> None:
-        cmake_hints = CMakeHints(path=self._output_dir / "hints.cmake")
-        for var, value in self._config.environment_config().items():
-            cmake_hints.add(var=var, value=value)
-        cmake_hints.generate()
 
     def generate(self) -> list[Benchmark]:
         transposed_bench_configs = self._config.benchmark_config(transposed=True)
@@ -98,5 +81,4 @@ class BenchGenerator:
             benchmark.generate()
             benchmarks.append(benchmark)
 
-        self._generate_cmake_hints()
         return benchmarks
