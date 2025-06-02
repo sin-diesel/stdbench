@@ -24,10 +24,9 @@ int main(int argc, char** argv) {
     // STDBENCH_METADATA_BEGIN
     benchmark::AddCustomContext("name", "{{ name }}");
     benchmark::AddCustomContext("policy", "{{ policy }}");
-    benchmark::AddCustomContext("container", "{{ src_container }}");
-    benchmark::AddCustomContext("type", "{{ T }}");
-    benchmark::AddCustomContext("predicate", "{{ func }}");
-
+    benchmark::AddCustomContext("container", "{{ container }}");
+    benchmark::AddCustomContext("type", "{{ type }}");
+    benchmark::AddCustomContext("predicate", "{{ predicate }}");
     benchmark::AddCustomContext("size", "{{ size }}");
     // STDBENCH_METADATA_END
 

@@ -14,7 +14,6 @@
   size_t size = 0;
   std::cin >> size;
   {{ container }}<{{type}}> src_container(size);
-  std::cin
   {% block init_container %}
     {{ super () }}
     std::iota(src_container.begin(), src_container.end(), 0);
@@ -22,7 +21,7 @@
   {% endblock %}
 
   {% block benchmark %}
-  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ func }});
+  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ predicate }});
   benchmark::DoNotOptimize(result);
   {% endblock %}
 

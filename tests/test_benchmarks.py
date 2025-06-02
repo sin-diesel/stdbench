@@ -27,6 +27,8 @@ def test_generator():
     assert len(benchmarks) > 0
     assert len(os.listdir(_repo_root / "build" / "benchmarks")) > 0
 
+    assert (_repo_root / "build" / "benchmarks" / "hints.cmake").exists()
+
 #def test_benchmarks_generation():
 #    config_path = _repo_root / "tests" / "config.yaml"
 #    bench_generator = BenchGenerator(config_path, templates_path=_repo_root / "templates")
