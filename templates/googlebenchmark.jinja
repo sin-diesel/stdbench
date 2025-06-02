@@ -21,12 +21,14 @@
 {% block bench_register %}
 BENCHMARK({{name}});
 int main(int argc, char** argv) {
+    // STDBENCH_METADATA_BEGIN
     benchmark::AddCustomContext("name", "{{ name }}");
     benchmark::AddCustomContext("policy", "{{ policy }}");
-    benchmark::AddCustomContext("src_container", "{{ src_container }}");
-    benchmark::AddCustomContext("T", "{{ T }}");
-    benchmark::AddCustomContext("func", "{{ func }}");
+    benchmark::AddCustomContext("container", "{{ container }}");
+    benchmark::AddCustomContext("type", "{{ type }}");
+    benchmark::AddCustomContext("predicate", "{{ predicate }}");
     benchmark::AddCustomContext("size", "{{ size }}");
+    // STDBENCH_METADATA_END
 
     benchmark::Initialize(&argc, argv);
     benchmark::RunSpecifiedBenchmarks();

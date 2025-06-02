@@ -7,6 +7,7 @@ runs:
       curl -sSL https://pdm-project.org/install-pdm.py.sha256 | shasum -a 256 -c -
       python3 install-pdm.py
       pdm sync
+      sudo apt update
       sudo apt install clang-19
       sudo apt install gnuplot
     shell: bash
@@ -32,9 +33,8 @@ runs:
     run: |
       source .venv/bin/activate
       conan install . -s compiler.cppstd=17 -s compiler.version=11
-      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py -k "test_benchmarks_generation"
+      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
       COMPILERS="g++ clang++-19" ./build.sh
-      ./test.sh
-      GNUTERM="dumb" pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py -k "test_benchmarks_plot_all"
+      COMPILERS="g++ clang++-19" ./test.sh
     shell: bash
 
