@@ -20,7 +20,7 @@ function(add_stdbench_test bare_name benchmark size compiler_opts_value)
       COMMAND
       sh -c "echo ${size} | ${CMAKE_BINARY_DIR}/${executable_name} \
       --benchmark_out_format=json \
-      --benchmark_out=${benchmark_name}.json \
+      --benchmark_out=${test_name}.json \
       --benchmark_context=compiler=${base_compiler_name} \
       --benchmark_context=compiler_opts=${compiler_opts_value}"
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

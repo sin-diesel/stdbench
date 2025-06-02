@@ -7,14 +7,20 @@ from glob import glob
 from pathlib import Path
 from dataclasses import asdict
 
-from stdbench.benchmark import Measurement
 from stdbench.benchmark import Benchmark
+from stdbench.config import Config
 
 
-class Plotter:
-    def __init__(self, build_folder: Path) -> None:
+class Measurement:
+    def __init__(self, data: dict[str, str]) -> None:
+        for param in benchmark_params:
+            setattr(self, param, None)
+
+
+class ResultsAnalyzer:
+    def __init__(self, build_folder: Path, compiler: str) -> None:
         self._build_folder = build_folder
-        self._measurements = self._obtain_performance_measurements(build_folder, "clang++-19")
+        self._measurements = self._obtain_performance_measurements(build_folder, compiler)
 
     @staticmethod
     def _obtain_performance_measurements(build_folder: Path, compiler: str) -> list[Measurement]:

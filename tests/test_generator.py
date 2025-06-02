@@ -4,7 +4,7 @@ from pathlib import Path
 
 from stdbench.benchmark import Benchmark, BenchGenerator
 from stdbench.config import Config
-from stdbench.plotter import Plotter
+from stdbench.results_analyzer import Measurement
 
 _repo_root = Path(__file__).parent.parent
 
@@ -28,6 +28,14 @@ def test_generator():
     assert len(os.listdir(_repo_root / "build" / "benchmarks")) > 0
 
     assert (_repo_root / "build" / "benchmarks" / "hints.cmake").exists()
+
+def test_measurement():
+    config = Config(_repo_root / "tests" / "config.yaml")
+    measurement = Measurement(config)
+
+    benchmark_configs = config.benchmark_params()
+    for config in benchmark_configs:
+        assert hasattr(measurement, config)
 
 #def test_benchmarks_generation():
 #    config_path = _repo_root / "tests" / "config.yaml"
