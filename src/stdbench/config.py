@@ -5,6 +5,7 @@ from pathlib import Path
 NormalizedConfig = dict[str, list[str]]
 TransposedConfig = set[dict[str, str]] | list[dict[str, str]]
 
+
 class Config:
     def __init__(self, path: Path) -> None:
         with open(path, "r") as file:
@@ -30,5 +31,3 @@ class Config:
 
     def environment_config(self, transposed: bool = False) -> NormalizedConfig | TransposedConfig:
         return self._environment_config if not transposed else self.transpose(self._benchmark_config)
-
-

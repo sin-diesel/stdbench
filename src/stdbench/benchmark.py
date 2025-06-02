@@ -29,13 +29,7 @@ class Measurement:
 
 
 class Benchmark:
-    def __init__(
-            self,
-            *,
-            template: str,
-            output_dir: Path,
-            params: NormalizedConfig
-        ) -> None:
+    def __init__(self, *, template: str, output_dir: Path, params: NormalizedConfig) -> None:
         self._template = template
         self._output_dir = output_dir
         self._params = params
