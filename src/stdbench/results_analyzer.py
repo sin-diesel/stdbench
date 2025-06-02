@@ -7,7 +7,7 @@ from glob import glob
 from pathlib import Path
 from dataclasses import asdict
 
-from stdbench.benchmark import Benchmark
+from stdbench.bench_generator import Benchmark
 from stdbench.config import Config
 
 

@@ -2,7 +2,8 @@ import os
 import pytest
 from pathlib import Path
 
-from stdbench.benchmark import Benchmark, BenchGenerator
+from stdbench.bench_generator import Benchmark, BenchGenerator
+from stdbench.test_generator import TestGenerator
 from stdbench.config import Config
 from stdbench.results_analyzer import Measurement
 
@@ -21,21 +22,23 @@ def test_config():
     environment_config = config.environment_config()
     assert "compiler" in environment_config.keys()
 
-def test_generator():
-    bench_generator = BenchGenerator(config_path=_repo_root / "tests" / "config.yaml", output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+def test_bench_generator():
+    config = Config(_repo_root / "tests" / "config.yaml")
+    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
     benchmarks = bench_generator.generate()
     assert len(benchmarks) > 0
     assert len(os.listdir(_repo_root / "build" / "benchmarks")) > 0
 
     assert (_repo_root / "build" / "benchmarks" / "hints.cmake").exists()
 
-def test_measurement():
+def test_test_generator():
     config = Config(_repo_root / "tests" / "config.yaml")
-    measurement = Measurement(config)
+    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+    benchmarks = bench_generator.generate()
 
-    benchmark_configs = config.benchmark_params()
-    for config in benchmark_configs:
-        assert hasattr(measurement, config)
+    test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
+    cmake_tests = test_generator.generate()
+
 
 #def test_benchmarks_generation():
 #    config_path = _repo_root / "tests" / "config.yaml"

@@ -1,23 +1,33 @@
 from pathlib import Path
 
-from stdbench.benchmark import Benchmark
-from stdbench.test_target import TestTarget
+from stdbench.bench_generator import Benchmark
+
+class CMakeTestTarget:
+    def __init__(self, *, build_path: Path, benchmark: Benchmark, env: dict[str, str]) -> None:
+        self._executable_name = benchmark.name
+        self._compiler_opts = env["compiler_opts"]
+        self._compiler = env["compiler"]
+        self._size = env["size"]
+
+        self._name = f"{self._executable_name}_{self._size}_{self._compiler_opts}"
+        self._results_path = build_path / self._compiler / self._name
+
 
 class TestGenerator:
-    def __init__(self, *, config_path: Path, output_dir: Path, benchmarks: list[Benchmark]) -> None:
-        self._config = Config(config_path)
-        if not output_dir.exists():
-            os.mkdir(output_dir)
-        self._output_dir = output_dir
-
+    def __init__(self, *, config: Config, build_path: Path, benchmarks: list[Benchmark]) -> None:
+        self._build_path = build_path
         self._benchmarks = benchmarks
+        self._config = config
 
-    def generate(self) -> list[TestTarget]:
+    def generate(self) -> list[CMakeTestTarget]:
         transposed_environment_configs = self._config.environment_config(transposed=True)
         cartesian_product = list(product(*transposed_environment_configs))
 
         tests: list[TestTarget] = []
         for config in cartesian_product:
-            params = self._config.normalize(config)
-            test = TestTarget()
+            for benchmark in self._benchmarks:
+                params = self._config.normalize(config)
+                test = CMakeTestTarget(build_path=self._build_path, benchmark=benchmark, env=config)
+                tests.append(test)
+        return tests
 

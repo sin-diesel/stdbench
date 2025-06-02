@@ -15,6 +15,11 @@ class Benchmark:
         self._template = template
         self._output_dir = output_dir
         self._params = params
+        self._name = ""
+
+    @property
+    def name(self) -> str:
+        return self._name
 
     def generate(self) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&"]
@@ -22,6 +27,7 @@ class Benchmark:
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
+        self._name = bench_name
 
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
         benchmark_path.write_text(self._template.render(**self._params))
