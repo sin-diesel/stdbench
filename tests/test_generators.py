@@ -1,11 +1,12 @@
 import os
 import pytest
+import subprocess
 from pathlib import Path
 
 from stdbench.bench_generator import Benchmark, BenchGenerator
 from stdbench.test_generator import TestGenerator
 from stdbench.config import Config
-from stdbench.results_analyzer import Measurement
+from stdbench.results_analyzer import ResultsAnalyzer
 
 _repo_root = Path(__file__).parent.parent
 
@@ -31,6 +32,7 @@ def test_bench_generator():
 
     assert (_repo_root / "build" / "benchmarks" / "hints.cmake").exists()
 
+
 def test_test_generator():
     config = Config(_repo_root / "tests" / "config.yaml")
     bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
@@ -38,6 +40,31 @@ def test_test_generator():
 
     test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
     cmake_tests = test_generator.generate()
+    assert len(cmake_tests) > 0
+
+
+def test_tmp_results():
+    config = Config(_repo_root / "tests" / "config.yaml")
+    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+    benchmarks = bench_generator.generate()
+
+    test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
+    cmake_tests = test_generator.generate()
+    assert len(cmake_tests) > 0
+
+
+def test_e2e():
+    config = Config(_repo_root / "tests" / "config.yaml")
+    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+    benchmarks = bench_generator.generate()
+
+    test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
+    cmake_tests = test_generator.generate()
+
+    subprocess.run(["bash", "build.sh"], cwd=_repo_root)
+    subprocess.run(["bash", "test.sh"], cwd=_repo_root)
+
+    results_analyzer = ResultsAnalyzer(cmake_tests)
 
 
 #def test_benchmarks_generation():

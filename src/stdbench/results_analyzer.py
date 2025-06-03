@@ -8,50 +8,15 @@ from pathlib import Path
 from dataclasses import asdict
 
 from stdbench.bench_generator import Benchmark
+from stdbench.test_generator import CMakeTestTarget
 from stdbench.config import Config
 
 
-class Measurement:
-    def __init__(self, data: dict[str, str]) -> None:
-        for param in benchmark_params:
-            setattr(self, param, None)
-
-
 class ResultsAnalyzer:
-    def __init__(self, build_folder: Path, compiler: str) -> None:
-        self._build_folder = build_folder
-        self._measurements = self._obtain_performance_measurements(build_folder, compiler)
-
-    @staticmethod
-    def _obtain_performance_measurements(build_folder: Path, compiler: str) -> list[Measurement]:
-        results = glob(str(build_folder / compiler / "*.json"))
-
-        measurements: list[Measurement] = []
-        for result in results:
-            data = json.loads(Path(result).read_text())
-            benchmark = data["benchmarks"][0]
-            params = {
-                key: data["context"][key]
-                for key in ["name", "size", "T", "policy", "src_container", "func", "compiler", "compiler_opts"]
-            }
-            measurements.append(
-                Measurement(
-                    name=benchmark["name"],
-                    T=params["T"],
-                    policy=params["policy"],
-                    size=int(params["size"]),
-                    src_container=params["src_container"],
-                    func=params["func"],
-                    compiler=params["compiler"],
-                    compiler_opts=params["compiler_opts"],
-                    cpu_time=benchmark["cpu_time"],
-                    real_time=benchmark["real_time"],
-                    time_unit=benchmark["time_unit"],
-                    iterations=benchmark["iterations"],
-                )
-            )
-
-        return measurements
+    def __init__(self, tests: list[CMakeTestTarget]) -> None:
+        self._tests = tests
+        for test in self._tests:
+            test.collect_measurements()
 
     def _plot_data(
         self, *, name: str, T: str, src_container: str, policy: str, func: str, compiler: str, compiler_opts: str

@@ -6,13 +6,27 @@ from stdbench.config import Config
 
 class CMakeTestTarget:
     def __init__(self, *, build_path: Path, benchmark: Benchmark, env: dict[str, str]) -> None:
-        self._executable_name = benchmark.name
         self._compiler_opts = env["compiler_opts"]
         self._compiler = env["compiler"]
         self._size = env["size"]
 
-        self._name = f"{self._executable_name}_{self._size}_{self._compiler_opts}"
-        self._results_path = build_path / self._compiler / self._name
+        self._executable_name = f"{benchmark.name}_{self._compiler_opts}"
+        self._name = f"{self._executable_name}_{self._size}"
+        self._results_path = build_path / self._compiler / f"{self._name}.json"
+
+        self._cpu_time: int | None = None
+        self._time_unit: str | None = None
+        self._iterations: int | None = None
+
+    def collect_measurements(self) -> None:
+        breakpoint()
+        if not self._results_path.exists():
+            raise FileNotFoundError("Benchmarks results were not found. Did you forget to run the tests?")
+        data = json.loads(results_path.read_text())
+        benchmark = data["benchmarks"][0]
+        self._cpu_time = benchmark["cpu_time"]
+        self._time_unit = benchmark["time_unit"]
+        self._iterations = benchmark["iterations"]
 
 
 class TestGenerator:
@@ -29,7 +43,6 @@ class TestGenerator:
         for config in cartesian_product:
             for benchmark in self._benchmarks:
                 params = self._config.normalize(config)
-                breakpoint()
                 test = CMakeTestTarget(build_path=self._build_path, benchmark=benchmark, env=params)
                 tests.append(test)
         return tests
