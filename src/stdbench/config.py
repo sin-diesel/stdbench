@@ -37,4 +37,4 @@ class Config:
         return self._benchmark_config if not transposed else self.transpose(self._benchmark_config)
 
     def environment_config(self, transposed: bool = False) -> NormalizedConfig | TransposedConfig:
-        return self._environment_config if not transposed else self.transpose(self._benchmark_config)
+        return self._environment_config if not transposed else self.transpose(self._environment_config)

@@ -1,6 +1,8 @@
 from pathlib import Path
+from itertools import product
 
 from stdbench.bench_generator import Benchmark
+from stdbench.config import Config
 
 class CMakeTestTarget:
     def __init__(self, *, build_path: Path, benchmark: Benchmark, env: dict[str, str]) -> None:
@@ -27,7 +29,8 @@ class TestGenerator:
         for config in cartesian_product:
             for benchmark in self._benchmarks:
                 params = self._config.normalize(config)
-                test = CMakeTestTarget(build_path=self._build_path, benchmark=benchmark, env=config)
+                breakpoint()
+                test = CMakeTestTarget(build_path=self._build_path, benchmark=benchmark, env=params)
                 tests.append(test)
         return tests
 

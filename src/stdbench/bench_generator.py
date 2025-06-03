@@ -49,9 +49,8 @@ class CMakeHints:
 
 
 class BenchGenerator:
-    def __init__(self, *, config_path: Path, output_dir: Path, templates_path: Path) -> None:
-        self._config = Config(config_path)
-
+    def __init__(self, *, config: Config, output_dir: Path, templates_path: Path) -> None:
+        self._config = config
         if not output_dir.exists():
             os.mkdir(output_dir)
         self._output_dir = output_dir
