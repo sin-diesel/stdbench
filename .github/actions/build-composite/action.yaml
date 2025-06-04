@@ -36,6 +36,6 @@ runs:
       python3 -m stdbench
       ./build.sh
       ./test.sh
-      pdm run pytest -s -o log_level=DEBUG -o log_cli=True tests/test_generators.py
+      GNUTERM="dumb" pdm run pytest -s -o log_level=DEBUG -o log_cli=True tests/test_generators.py
     shell: bash
 
