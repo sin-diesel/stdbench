@@ -35,6 +35,18 @@ class CMakeTestTarget:
         return self._benchmark.algorithm_name
 
     @property
+    def container(self) -> str:
+        return self._benchmark._params["container"]
+
+    @property
+    def type(self) -> str:
+        return self._benchmark._params["type"]
+
+    @property
+    def policy(self) -> str:
+        return self._benchmark._params["policy"]
+
+    @property
     def cpu_time(self) -> int:
         return self._cpu_time
 

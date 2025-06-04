@@ -27,35 +27,35 @@ class ResultsAnalyzer:
       #  x_s = x[idx]
       #  y_s = y[idx]
 
-        env_config = self._config.environment_config()
         benchmark_config = self._config.benchmark_config()
+        environment_config = self._config.environment_config()
+        test_config = benchmark_config | environment_config
 
-        compilers = env_config["compiler"]
-        compiler_opts = env_config["compiler_opts"]
-        algorithms = benchmark_config["name"]
-
-        plot_configurations = {k: v for k, v in (env_config | benchmark_config).items() if k in ["compiler", "compiler_opts", "name"]}
+        plot_keys = ["compiler", "compiler_opts", "container", "type", "name"]
+        plot_configurations = {k: v for k, v in test_config.items() if k in plot_keys}
 
         cartesian_product = list(product(*Config.transpose(plot_configurations)))
 
-        for configuration in cartesian_product:
+        for plot_config in cartesian_product:
+            plot_params = Config.normalize(plot_config)
+            plots = []
             for policy in benchmark_config["policy"]:
-                params = Config.normalize(configuration)
-                breakpoint()
- #               tests = [test for test in self._tests if all([getattr(test, param) == params[param] for param in params.keys()])]
- #           x = np.array([test.size for test in tests])
- #           y = np.array([test.cpu_time for test in tests])
- #           idx = np.argsort(x)
- #           x_s = x[idx]
- #           y_s = y[idx]
+                policy_plot_params = plot_params.copy()
+                policy_plot_params.update({"policy": policy})
+                tests = [test for test in self._tests if all([getattr(test, param) == policy_plot_params[param] for param in policy_plot_params.keys()])]
 
- #           policy = values["policy"]
-            # name = values["name"]
-#            # underscore_idx = policy.index("_")
-#            # raw_policy = policy[:underscore_idx] + "\\" + policy[underscore_idx:]
-#            plots.append((x, y, {"legend": policy.replace("_", "-")}))
+                x = np.array([int(test.size) for test in tests])
+                y = np.array([float(test.cpu_time) for test in tests])
+                idx = np.argsort(x)
+                x_s = x[idx]
+                y_s = y[idx]
 
-#       gp.plot(
- #           (x_s,  y_s, {"with": "linespoints"}), title=f"compiler: {params['compiler']}", xlabel="size, n", ylabel="cpu_time, ns"
- #       )
-##
+
+                plots.append((x, y, {"legend": policy}))
+            gp.plot(
+                *plots,
+                title=f"name: {plot_params['name']}, compiler: {plot_params['compiler']}, compiler opts: {plot_params['compiler_opts']}, container: {plot_params['container']}, type: {plot_params['type']}",
+                xlabel="size, n",
+                ylabel="cpu_time, ns",
+            )
+
