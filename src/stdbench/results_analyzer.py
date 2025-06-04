@@ -21,12 +21,6 @@ class ResultsAnalyzer:
             test.collect_measurements()
 
     def plot_all(self) -> None:
-      #  x = np.array([measurement.size for measurement in measurements])
-      #  y = np.array([measurement.cpu_time for measurement in measurements])
-      #  idx = np.argsort(x)
-      #  x_s = x[idx]
-      #  y_s = y[idx]
-
         benchmark_config = self._config.benchmark_config()
         environment_config = self._config.environment_config()
         test_config = benchmark_config | environment_config
@@ -52,7 +46,8 @@ class ResultsAnalyzer:
 
 
                 plots.append((x, y, {"legend": policy}))
-            gp.plot(
+            gp_instance = gp.gnuplotlib()
+            gp_instance.plot(
                 *plots,
                 title=f"name: {plot_params['name']}, compiler: {plot_params['compiler']}, compiler opts: {plot_params['compiler_opts']}, container: {plot_params['container']}, type: {plot_params['type']}",
                 xlabel="size, n",
