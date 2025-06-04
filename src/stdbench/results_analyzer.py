@@ -36,7 +36,11 @@ class ResultsAnalyzer:
             for policy in benchmark_config["policy"]:
                 policy_plot_params = plot_params.copy()
                 policy_plot_params.update({"policy": policy})
-                tests = [test for test in self._tests if all([getattr(test, param) == policy_plot_params[param] for param in policy_plot_params.keys()])]
+                tests = [
+                    test
+                    for test in self._tests
+                    if all([getattr(test, param) == policy_plot_params[param] for param in policy_plot_params.keys()])
+                ]
 
                 x = np.array([int(test.size) for test in tests])
                 y = np.array([float(test.cpu_time) for test in tests])
@@ -44,13 +48,15 @@ class ResultsAnalyzer:
                 x_s = x[idx]
                 y_s = y[idx]
 
-
-                plots.append((x, y, {"legend": policy}))
+                plots.append((x_s, y_s, {"legend": policy}))
             gp_instance = gp.gnuplotlib()
             gp_instance.plot(
                 *plots,
-                title=f"name: {plot_params['name']}, compiler: {plot_params['compiler']}, compiler opts: {plot_params['compiler_opts']}, container: {plot_params['container']}, type: {plot_params['type']}",
+                title=f"name: {plot_params['name']}, \
+compiler: {plot_params['compiler']}, \
+compiler opts: {plot_params['compiler_opts']}, \
+container: {plot_params['container']}, \
+type: {plot_params['type']}",
                 xlabel="size, n",
                 ylabel="cpu_time, ns",
             )
-

@@ -15,7 +15,7 @@ class Benchmark:
         self._template = template
         self._output_dir = output_dir
         self._params = params
-        self._algorithm_name= params["name"]
+        self._algorithm_name = params["name"]
         self._name = ""
 
     @property
