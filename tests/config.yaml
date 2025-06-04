@@ -8,7 +8,7 @@ benchmark:
   predicate: ["[](int i) { return i % 4 == 0; }"]
 
 environment:
-  compiler: ["clang++19"]
+  compiler: ["clang++-19"]
   compiler_opts: ["-O2"]
   size: ["1000", "2000", "3000", "10000", "20000", "30000", "100000", "500000"]
 

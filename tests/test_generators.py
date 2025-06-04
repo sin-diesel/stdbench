@@ -43,7 +43,7 @@ def test_test_generator():
     assert len(cmake_tests) > 0
 
 
-def test_tmp_results():
+def test_analyzer():
     config = Config(_repo_root / "tests" / "config.yaml")
     bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
     benchmarks = bench_generator.generate()
@@ -52,20 +52,20 @@ def test_tmp_results():
     cmake_tests = test_generator.generate()
     assert len(cmake_tests) > 0
 
+    results_analyzer = ResultsAnalyzer(config=config, tests=cmake_tests)
 
-def test_e2e():
+
+def test_plot():
     config = Config(_repo_root / "tests" / "config.yaml")
     bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
     benchmarks = bench_generator.generate()
 
     test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
     cmake_tests = test_generator.generate()
+    assert len(cmake_tests) > 0
 
-    subprocess.run(["bash", "build.sh"], cwd=_repo_root)
-    subprocess.run(["bash", "test.sh"], cwd=_repo_root)
-
-    #results_analyzer = ResultsAnalyzer(cmake_tests)
-
+    results_analyzer = ResultsAnalyzer(config=config, tests=cmake_tests)
+    results_analyzer.plot_all()
 
 #def test_benchmarks_generation():
 #    config_path = _repo_root / "tests" / "config.yaml"
