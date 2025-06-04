@@ -5,27 +5,9 @@ import copy
 
 from itertools import product
 from jinja2 import Environment, Template, FileSystemLoader
-from dataclasses import dataclass
 from pathlib import Path
 
 from stdbench.config import Config, NormalizedConfig
-
-
-@dataclass(kw_only=True)
-class Measurement:
-    name: str
-    T: str
-    policy: str
-    size: str
-    src_container: str
-    func: str
-    compiler: str
-    compiler_opts: str
-
-    time_unit: str
-    cpu_time: float
-    real_time: float
-    iterations: int
 
 
 class Benchmark:
@@ -33,6 +15,11 @@ class Benchmark:
         self._template = template
         self._output_dir = output_dir
         self._params = params
+        self._name = ""
+
+    @property
+    def name(self) -> str:
+        return self._name
 
     def generate(self) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&"]
@@ -40,6 +27,7 @@ class Benchmark:
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
+        self._name = bench_name
 
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
         benchmark_path.write_text(self._template.render(**self._params))
@@ -61,9 +49,8 @@ class CMakeHints:
 
 
 class BenchGenerator:
-    def __init__(self, *, config_path: Path, output_dir: Path, templates_path: Path) -> None:
-        self._config = Config(config_path)
-
+    def __init__(self, *, config: Config, output_dir: Path, templates_path: Path) -> None:
+        self._config = config
         if not output_dir.exists():
             os.mkdir(output_dir)
         self._output_dir = output_dir

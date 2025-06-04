@@ -12,7 +12,7 @@ get_filename_component(base_compiler_name ${CMAKE_CXX_COMPILER} NAME_WE)
 
 
 function(add_stdbench_test bare_name benchmark size compiler_opts_value)
-   set(test_name "${bare_name}_${size}_${compiler_opts_value}")
+   set(test_name "${bare_name}_${compiler_opts_value}_${size}")
    set(executable_name "${bare_name}_${compiler_opts_value}")
 
    add_test(NAME
@@ -20,7 +20,7 @@ function(add_stdbench_test bare_name benchmark size compiler_opts_value)
       COMMAND
       sh -c "echo ${size} | ${CMAKE_BINARY_DIR}/${executable_name} \
       --benchmark_out_format=json \
-      --benchmark_out=${benchmark_name}.json \
+      --benchmark_out=${test_name}.json \
       --benchmark_context=compiler=${base_compiler_name} \
       --benchmark_context=compiler_opts=${compiler_opts_value}"
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

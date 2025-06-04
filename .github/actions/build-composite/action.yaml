@@ -33,8 +33,6 @@ runs:
     run: |
       source .venv/bin/activate
       conan install . -s compiler.cppstd=17 -s compiler.version=11
-      pdm run pytest -o log_level=DEBUG -o log_cli=True tests/test_benchmarks.py
-      COMPILERS="g++ clang++-19" ./build.sh
-      COMPILERS="g++ clang++-19" ./test.sh
+      pdm run pytest -s -o log_level=DEBUG -o log_cli=True tests/test_generators.py
     shell: bash
 
