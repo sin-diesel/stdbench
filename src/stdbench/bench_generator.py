@@ -15,11 +15,16 @@ class Benchmark:
         self._template = template
         self._output_dir = output_dir
         self._params = params
+        self._algorithm_name = params["name"]
         self._name = ""
 
     @property
     def name(self) -> str:
         return self._name
+
+    @property
+    def algorithm_name(self) -> str:
+        return self._algorithm_name
 
     def generate(self) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&"]

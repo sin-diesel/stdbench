@@ -12,6 +12,7 @@ class CMakeTestTarget:
         self._compiler_opts = env["compiler_opts"]
         self._compiler = env["compiler"]
         self._size = env["size"]
+        self._benchmark = benchmark
 
         self._executable_name = f"{benchmark.name}_{self._compiler_opts}"
         self._name = f"{self._executable_name}_{self._size}"
@@ -20,6 +21,38 @@ class CMakeTestTarget:
         self._cpu_time: int | None = None
         self._time_unit: str | None = None
         self._iterations: int | None = None
+
+    @property
+    def compiler_opts(self) -> str:
+        return self._compiler_opts
+
+    @property
+    def compiler(self) -> str:
+        return self._compiler
+
+    @property
+    def name(self) -> str:
+        return self._benchmark.algorithm_name
+
+    @property
+    def container(self) -> str:
+        return self._benchmark._params["container"]
+
+    @property
+    def type(self) -> str:
+        return self._benchmark._params["type"]
+
+    @property
+    def policy(self) -> str:
+        return self._benchmark._params["policy"]
+
+    @property
+    def cpu_time(self) -> int:
+        return self._cpu_time
+
+    @property
+    def size(self) -> int:
+        return self._size
 
     def collect_measurements(self) -> None:
         if not self._results_path.exists():
