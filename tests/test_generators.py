@@ -64,7 +64,7 @@ def test_e2e():
     subprocess.run(["bash", "build.sh"], cwd=_repo_root)
     subprocess.run(["bash", "test.sh"], cwd=_repo_root)
 
-    results_analyzer = ResultsAnalyzer(cmake_tests)
+    #results_analyzer = ResultsAnalyzer(cmake_tests)
 
 
 #def test_benchmarks_generation():

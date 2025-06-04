@@ -18,7 +18,6 @@ class Config:
     def template(self) -> str:
         return self._template
 
-
     @staticmethod
     def transpose(config: NormalizedConfig) -> TransposedConfig:
         return [[{key: v} for v in value] for key, value in config.items()]
