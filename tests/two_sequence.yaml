@@ -1,0 +1,15 @@
+template: "input_range.jinja"
+
+benchmark:
+  name: ["find_first_of"]
+  policy: ["par", "par_unseq", "seq"]
+  container: ["std::vector"]
+  type: ["int"]
+  sequence: ["1, 6, 7, 0"]
+
+
+environment:
+  compiler: ["clang++-19", "g++"]
+  compiler_opts: ["-O2"]
+  size: ["10000", "20000", "30000", "40000", "50000", "60000", "70000"]
+
