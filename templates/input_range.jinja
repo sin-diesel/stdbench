@@ -6,6 +6,7 @@
 #include <execution>
 #include <numeric>
 #include <iostream>
+#include <random>
 {% endblock %}
 
 {% block benhcmark_function %}
@@ -14,9 +15,13 @@
   size_t size = 0;
   std::cin >> size;
   {{ container }}<{{type}}> src_container(size);
+
   {% block init_container %}
     {{ super () }}
-    std::iota(src_container.begin(), src_container.end(), 0);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(1, 100);
+    std::generate(src_container.begin(), src_container.end(), [&](){return dist(gen);});
     {% endblock %}
   {% endblock %}
 
