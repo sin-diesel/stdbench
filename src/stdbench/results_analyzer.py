@@ -44,6 +44,7 @@ class ResultsAnalyzer:
 
                 x = np.array([int(test.size) for test in tests])
                 y = np.array([float(test.cpu_time) for test in tests])
+                x = np.log10(x)
                 idx = np.argsort(x)
                 x_s = x[idx]
                 y_s = y[idx]
@@ -57,6 +58,6 @@ compiler: {plot_params['compiler']}, \
 compiler opts: {plot_params['compiler_opts']}, \
 container: {plot_params['container']}, \
 type: {plot_params['type']}",
-                xlabel="size, n",
+                xlabel="log(size), n",
                 ylabel="cpu_time, ns",
             )
