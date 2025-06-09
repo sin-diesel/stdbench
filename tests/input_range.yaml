@@ -1,7 +1,7 @@
 template: "input_range.jinja"
 
 benchmark:
-  name: ["all_of", "none_of", "any_of"]
+  name: ["all_of", "none_of", "any_of", "find_if", "find_if_not", "count_if", "adjacent_find"]
   policy: ["par", "par_unseq", "seq"]
   container: ["std::vector"]
   type: ["int"]
@@ -10,4 +10,4 @@ benchmark:
 environment:
   compiler: ["clang++-19", "g++"]
   compiler_opts: ["-O2"]
-  size: ["1000", "10000", "100000", "1000000", "10000000", "1000000000"]
+  size: ["1000", "10000", "100000", "1000000", "10000000", "100000000"]
