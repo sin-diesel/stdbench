@@ -55,7 +55,7 @@ class ResultsAnalyzer:
                 *plots,
                 title=f"name: {plot_params['name']}, \
 compiler: {plot_params['compiler']}, \
-compiler opts: {plot_params['compiler_opts']}, \
+compiler opts: {plot_params['compiler_opts'].replace("_", "\\\\")}, \
 container: {plot_params['container']}, \
 type: {plot_params['type']}",
                 xlabel="log(size), n",
