@@ -1,4 +1,4 @@
-template: "input_range.jinja"
+template: "input_range_noreturn_val.jinja"
 
 benchmark:
   name: ["for_each"]
@@ -11,5 +11,4 @@ environment:
   compiler: ["clang++-19", "g++"]
   compiler_opts: ["-O2"]
   size: ["1000", "10000", "100000", "1000000", "10000000"]
-
 
