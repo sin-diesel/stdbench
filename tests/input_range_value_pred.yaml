@@ -1,0 +1,14 @@
+template: "input_range_value_pred.jinja"
+
+benchmark:
+  name: ["replace_if", "replace_copy_if"]
+  policy: ["par", "par_unseq", "seq"]
+  container: ["std::vector"]
+  type: ["int"]
+  predicate: ["[](int i) { return i % 4 == 13; }"]
+  value: "999"
+
+environment:
+  compiler: ["g++"]
+  compiler_opts: ["-O2"]
+  size: ["1000", "10000", "100000", "1000000", "10000000", "100000000"]
