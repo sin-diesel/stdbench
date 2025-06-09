@@ -26,7 +26,8 @@
   {% endblock %}
 
   {% block benchmark %}
-  std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ predicate }});
+  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ predicate }});
+  benchmark::DoNotOptimize(result);
   {% endblock %}
 
 {% endblock %}

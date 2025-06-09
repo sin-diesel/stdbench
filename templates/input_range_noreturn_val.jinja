@@ -1,0 +1,6 @@
+{% extends "input_range.jinja" %}
+{% block benchmark %}
+std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), {{ value }}, {{ predicate }});
+benchmark::DoNotOptimize(src_container);
+{% endblock %}
+

@@ -55,8 +55,15 @@ def test_analyzer():
 
 
 def test_plot_all():
-    for config in ["config.yaml"]:
-        config = Config(_repo_root / "tests" / config)
+    configs = ["input_range_noreturn.yaml", "input_range_noreturn_val.yaml", "input_range.yaml"]
+
+    for config_value in configs:
+        config = Config(_repo_root / "tests" / config_value)
+        bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+        benchmarks = bench_generator.generate()
+
+    for config_value in configs:
+        config = Config(_repo_root / "tests" / config_value)
         bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
         benchmarks = bench_generator.generate()
 
