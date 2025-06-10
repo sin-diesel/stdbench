@@ -1,6 +1,10 @@
 benchmarks:
   policy: ["par", "par_unseq", "seq"]
   input: ["random"]
+  container: ["std::vector"]
+  return: ["true"]
+  container: ["std::vector"]
+  type: ["int"]
 
   environment:
     compiler_options: ["-O2"]
@@ -8,18 +12,18 @@ benchmarks:
 
   algorithms:
     - name: ["all_of"]
-      signature: ["<input_container>.begin(), <input_container>.end(), [](int i) { return i % 2 == 0; }"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int i) { return i % 2 == 0; }"]
 
     - name: ["count"]
-      signature: ["<input_container>.begin(), <input_container>.end(), 999"]
+      signature: ["input_container__.begin(), input_container__.end(), 999"]
 
     - name: ["sort", "stable_sort"]
-      signature: ["<input_container>.begin(), <input_container.end(), [](int x, int y) { return x < y; }"]
+      signature: ["input_container__.begin(), input_contaienr__.end(), [](int x, int y) { return x < y; }"]
       override:
         environment:
           compiler_options: ["-O3"]
 
     - name: ["transform"]
-      signature: ["<input_container>.begin(), <input_container>.end(), <destination_container>.begin(), std::plus<>{}"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), std::plus<>{}"]
       override:
         policy: ["par", "par_unseq", "seq"]

@@ -17,19 +17,28 @@ class Config:
         policy = [Policy[policy] for policy in config["benchmarks"]["policy"]]
         input = [Input[input] for input in config["benchmarks"]["input"]]
         environment = config["benchmarks"]["environment"]
+        container = config["benchmarks"]["container"]
+        type = config["benchmarks"]["type"]
+        return_val = config["benchmarks"]["return"]
 
         for algorithm in config["benchmarks"]["algorithms"]:
             if algorithm.get("override", None):
                 policy = algorithm["override"].get("policy", policy)
                 input = algorithm["override"].get("input", input)
+                container = algorithm["override"].get("container", container)
                 environment = algorithm["override"].get("environment", environment)
+                type = algorithm["override"].get("type", type)
+                return_val = algorithm["override"].get("return", return_val)
 
             benchmark_configs.append(
                 BenchmarkConfig(
                     name=algorithm["name"],
                     policy=policy,
                     input=input,
+                    container=container,
+                    type=type,
                     signature=algorithm["signature"],
+                    return_val=return_val,
                     environment=environment,
                 )
             )
@@ -38,6 +47,10 @@ class Config:
     @staticmethod
     def transpose(config: dict[str, list[str]]) -> set[dict[str, str]] | list[dict[str, str]]:
         return [[{key: v} for v in value] for key, value in config.items()]
+
+    @staticmethod
+    def normalize(config: set[dict[str, str]] | list[dict[str, str]]) -> dict[str, list[str]]:
+        return {list(value.keys())[0]: list(value.values())[0] for value in config}
 
     @property
     def benchmark_configs(self) -> list[BenchmarkConfig]:
