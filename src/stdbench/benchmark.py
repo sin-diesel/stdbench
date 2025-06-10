@@ -11,18 +11,11 @@ class Policy(Enum):
         return self.name
 
 
-class Input(Enum):
-    random = auto()
-
-    def __str__(self):
-        return self.name
-
-
 @dataclass(kw_only=True)
 class BenchmarkConfig:
     name: list[str]
     policy: list[Policy]
-    input: list[Input]
+    input: list[str]
     container: list[str]
     type: list[str]
     signature: list[str]

@@ -25,6 +25,7 @@ function(add_stdbench_test bare_name benchmark size compiler_opts_value)
       --benchmark_context=compiler_opts=${compiler_opts_value}"
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
    )
+   set_tests_properties(${test_name} PROPERTIES TIMEOUT 10)
 
 endfunction()
 

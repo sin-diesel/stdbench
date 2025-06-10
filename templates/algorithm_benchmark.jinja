@@ -14,24 +14,33 @@
   {% block setup %}
   size_t size__ = 0;
   std::cin >> size__;
+
+
   {{ container }}<{{ type }}> input_container__(size__);
-  {{ container }}<{{ type }}> output_container__(size__);
+  {{ container }}<{{ type }}> destination_container__(size__);
   {% endblock %}
 
-  {% if input == random %}
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(1, 100);
     std::generate(input_container__.begin(), input_container__.end(), [&](){return dist(gen);});
+  {% if input == "random" %}
+    std::generate(destination_container__.begin(), destination_container__.end(), [&](){return dist(gen);});
+  {% else %}
+    destination_container__ = {{ input }};
   {% endif %}
+
+           {{ input  }}
+           {{ return_val }}
   {% block benchmark %}
     {% set call = "std::" ~ name ~ "(std::execution::" ~ policy ~ "," ~ signature ~ ");"%}
     {% if return_val == "true" %} 
       auto result = {{ call }}
       benchmark::DoNotOptimize(result);
     {% else %}
+      {{ call }}
       benchmark::DoNotOptimize(input_container__);
-      benchmark::DoNotOptimize(output_container__);
+      benchmark::DoNotOptimize(destination_container__);
     {% endif %}
   {% endblock %}
 

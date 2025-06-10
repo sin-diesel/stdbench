@@ -11,11 +11,19 @@ benchmarks:
     size: ["1000", "10000", "100000", "1000000", "10000000"]
 
   algorithms:
-    - name: ["all_of"]
+    - name: ["all_of", "any_of", "none_of", "find_if", "find_if_not"]
       signature: ["input_container__.begin(), input_container__.end(), [](int i) { return i % 2 == 0; }"]
 
-    - name: ["count"]
+    - name: ["adjacent_find"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y;}"]
+
+    - name: ["find", "count"]
       signature: ["input_container__.begin(), input_container__.end(), 999"]
+
+    - name: ["find_end", "find_first_of"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end(), [](int x, int y) { return x < y;}"]
+      override:
+        input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
 
     - name: ["sort", "stable_sort"]
       signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y; }"]
@@ -28,3 +36,8 @@ benchmarks:
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), std::plus<>{}"]
       override:
         policy: ["par", "par_unseq", "seq"]
+
+    - name: ["mismatch"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end()"]
+      override:
+        input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]

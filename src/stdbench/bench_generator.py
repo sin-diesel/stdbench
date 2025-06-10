@@ -9,7 +9,7 @@ from jinja2 import Environment, Template, FileSystemLoader
 from pathlib import Path
 
 from stdbench.config import Config
-from stdbench.benchmark import Policy, Input
+from stdbench.benchmark import Policy
 
 
 class BenchmarkSource:
@@ -18,7 +18,7 @@ class BenchmarkSource:
         *,
         name: str,
         policy: Policy,
-        input: Input,
+        input: str,
         signature: str,
         output_dir: Path,
         template: Template,
@@ -47,13 +47,22 @@ class BenchmarkSource:
     def generate(self) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">"]
         bench_name = (
-            "_".join([self._name, str(self._policy), str(self._input), self._container, self._type, self._signature])
+            "_".join([self._name, str(self._policy), self._input, self._container, self._type, self._signature])
         ).replace(" ", "_")
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
 
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
+
+        print(self._template.render(
+                name=self._name,
+                container=self._container,
+                type=self._type,
+                signature=self._signature,
+                policy=str(self._policy),
+                input=self._input,
+                return_val=self._return))
 
         benchmark_path.write_text(
             self._template.render(

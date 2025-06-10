@@ -2,7 +2,7 @@ import yaml
 
 from pathlib import Path
 
-from stdbench.benchmark import BenchmarkConfig, Policy, Input
+from stdbench.benchmark import BenchmarkConfig, Policy
 
 
 class _CMakeHints:
@@ -36,7 +36,7 @@ class Config:
     def _resolve_overrides(config: dict[str, list[str] | str]) -> list[BenchmarkConfig]:
         benchmark_configs: list[BenchmarkConfig] = []
         policy = [Policy[policy] for policy in config["benchmarks"]["policy"]]
-        input = [Input[input] for input in config["benchmarks"]["input"]]
+        input = config["benchmarks"]["input"]
         environment = config["benchmarks"]["environment"]
         container = config["benchmarks"]["container"]
         type = config["benchmarks"]["type"]
