@@ -35,6 +35,10 @@ class Config:
             )
         return benchmark_configs
 
+    @staticmethod
+    def transpose(config: dict[str, list[str]]) -> set[dict[str, str]] | list[dict[str, str]]:
+        return [[{key: v} for v in value] for key, value in config.items()]
+
     @property
     def benchmark_configs(self) -> list[BenchmarkConfig]:
         return self._benchmark_configs

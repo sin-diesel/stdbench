@@ -4,19 +4,20 @@ import shutil
 import copy
 
 from itertools import product
+from dataclasses import asdict
 from jinja2 import Environment, Template, FileSystemLoader
 from pathlib import Path
 
-from stdbench.config import Config, NormalizedConfig
+from stdbench.config import Config
 
 
-class Benchmark:
-    def __init__(self, *, template: str, output_dir: Path, params: NormalizedConfig) -> None:
-        self._template = template
+class BenchmarkSource:
+    def __init__(self, *, name: str, policy: Policy, input: Input, signature: str, output_dir: Path) -> None:
+        self._name = name
+        self._policy = policy
+        self._input = input
+        self._signature = signature
         self._output_dir = output_dir
-        self._params = params
-        self._algorithm_name = params["name"]
-        self._name = ""
 
     @property
     def name(self) -> str:
@@ -32,7 +33,6 @@ class Benchmark:
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
-        self._name = bench_name
 
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
         benchmark_path.write_text(self._template.render(**self._params))
@@ -56,14 +56,14 @@ class CMakeHints:
 class BenchGenerator:
     def __init__(self, *, config: Config, output_dir: Path, templates_path: Path) -> None:
         self._config = config
-        if not output_dir.exists():
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
             os.mkdir(output_dir)
         self._output_dir = output_dir
 
         self._templates_path = templates_path
 
         self._env = Environment(loader=FileSystemLoader(self._templates_path))
-        self._template = self._env.get_template(self._config.template)
 
     def _generate_cmake_hints(self) -> None:
         cmake_hints = CMakeHints(path=self._output_dir / "hints.cmake")
@@ -72,16 +72,18 @@ class BenchGenerator:
         cmake_hints.generate()
 
     def generate(self) -> list[Benchmark]:
-        transposed_bench_configs = self._config.benchmark_config(transposed=True)
-        cartesian_product = list(product(*transposed_bench_configs))
+        for benchmark_config in self._config.benchmark_configs:
+            breakpoint()
+            transposed_bench_configs = Config.transpose(benchmark_config.algorithm_config())
+            benchmarks_product = list(product(*transposed_bench_configs))
 
-        benchmarks: list[Benchmark] = []
-        for config in cartesian_product:
-            params = self._config.normalize(config)
-            benchmark = Benchmark(template=self._template, output_dir=self._output_dir, params=params)
-            benchmark.generate()
-            benchmarks.append(benchmark)
+            benchmarks: list[Benchmark] = []
+            for constructed_config in cartesian_product:
+                params = self._config.normalize(config)
+                benchmark = Benchmark(template=self._template, output_dir=self._output_dir, params=params)
+                benchmark.generate()
+                benchmarks.append(benchmark)
 
-        self._generate_cmake_hints()
+                self._generate_cmake_hints()
 
         return benchmarks

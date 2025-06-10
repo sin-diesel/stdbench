@@ -11,7 +11,7 @@ benchmarks:
       signature: ["<input_container>.begin(), <input_container>.end(), [](int i) { return i % 2 == 0; }"]
 
     - name: ["count"]
-      signature: ["<input_container.begin(), <input_container>.end(), 999"]
+      signature: ["<input_container>.begin(), <input_container>.end(), 999"]
 
     - name: ["sort", "stable_sort"]
       signature: ["<input_container>.begin(), <input_container.end(), [](int x, int y) { return x < y; }"]

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from enum import Enum, auto
 
 
@@ -19,3 +19,9 @@ class BenchmarkConfig:
     input: list[Input]
     signature: list[str]
     environment: dict[str, list[str]]
+
+    def algorithm_config(self) -> dict[str, list[str]]:
+        return {k: v for k, v in asdict(self).items() if k != "environment"}
+
+    def environment_config(self) -> dict[str, list[str]]:
+        return self.environment
