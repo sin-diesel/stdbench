@@ -2,38 +2,39 @@ import yaml
 
 from pathlib import Path
 
-NormalizedConfig = dict[str, list[str]]
-TransposedConfig = set[dict[str, str]] | list[dict[str, str]]
+from stdbench.benchmark import BenchmarkConfig, Policy, Input
 
 
 class Config:
     def __init__(self, path: Path) -> None:
         with open(path, "r") as file:
             self._config = yaml.safe_load(file)
-        self._template = self._config["template"]
-        self._benchmark_config = self._config["benchmark"]
-        self._environment_config = self._config["environment"]
+        self._benchmark_configs = self._resolve_overrides(self._config)
+
+    @staticmethod
+    def _resolve_overrides(config: dict[str, list[str] | str]) -> list[BenchmarkConfig]:
+        benchmark_configs: list[BenchmarkConfig] = []
+        policy = [Policy[policy] for policy in config["benchmarks"]["policy"]]
+        input = [Input[input] for input in config["benchmarks"]["input"]]
+        environment = config["benchmarks"]["environment"]
+
+        for algorithm in config["benchmarks"]["algorithms"]:
+            if algorithm.get("override", None):
+                policy = algorithm["override"].get("policy", policy)
+                input = algorithm["override"].get("input", input)
+                environment = algorithm["override"].get("environment", environment)
+
+            benchmark_configs.append(
+                BenchmarkConfig(
+                    name=algorithm["name"],
+                    policy=policy,
+                    input=input,
+                    signature=algorithm["signature"],
+                    environment=environment,
+                )
+            )
+        return benchmark_configs
 
     @property
-    def template(self) -> str:
-        return self._template
-
-    @staticmethod
-    def transpose(config: NormalizedConfig) -> TransposedConfig:
-        return [[{key: v} for v in value] for key, value in config.items()]
-
-    @staticmethod
-    def normalize(config: TransposedConfig) -> NormalizedConfig:
-        return {list(value.keys())[0]: list(value.values())[0] for value in config}
-
-    def benchmark_params(self) -> list[str]:
-        return self._benchmark_config.keys()
-
-    def environment_params(self) -> list[str]:
-        return self._environment_config.keys()
-
-    def benchmark_config(self, transposed: bool = False) -> NormalizedConfig | TransposedConfig:
-        return self._benchmark_config if not transposed else self.transpose(self._benchmark_config)
-
-    def environment_config(self, transposed: bool = False) -> NormalizedConfig | TransposedConfig:
-        return self._environment_config if not transposed else self.transpose(self._environment_config)
+    def benchmark_configs(self) -> list[BenchmarkConfig]:
+        return self._benchmark_configs

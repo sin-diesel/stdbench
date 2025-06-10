@@ -1,15 +1,25 @@
-template: "input_range.jinja"
-
-benchmark:
-  name: ["count_if", "all_of"]
+benchmarks:
   policy: ["par", "par_unseq", "seq"]
-  container: ["std::vector"]
-  type: ["int"]
-  predicate: ["[](int i) { return i % 4 == 0; }"]
+  input: ["random"]
 
-environment:
-  compiler: ["clang++-19", "g++"]
-  compiler_opts: ["-O2"]
-  size: ["1000", "10000", "100000", "1000000", "10000000"]
+  environment:
+    compiler_options: ["-O2"]
+    size: ["1000", "10000", "100000", "1000000", "10000000"]
 
+  algorithms:
+    - name: ["all_of"]
+      signature: ["<input_container>.begin(), <input_container>.end(), [](int i) { return i % 2 == 0; }"]
 
+    - name: ["count"]
+      signature: ["<input_container.begin(), <input_container>.end(), 999"]
+
+    - name: ["sort", "stable_sort"]
+      signature: ["<input_container>.begin(), <input_container.end(), [](int x, int y) { return x < y; }"]
+      override:
+        environment:
+          compiler_options: ["-O3"]
+
+    - name: ["transform"]
+      signature: ["<input_container>.begin(), <input_container>.end(), <destination_container>.begin(), std::plus<>{}"]
+      override:
+        policy: ["par", "par_unseq", "seq"]
