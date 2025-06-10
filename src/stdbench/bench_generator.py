@@ -24,7 +24,7 @@ class BenchmarkSource:
         template: Template,
         container: str,
         type: str,
-        return_val: str
+        return_val: str,
     ) -> None:
         self._name = name
         self._policy = policy
@@ -46,7 +46,9 @@ class BenchmarkSource:
 
     def generate(self) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">"]
-        bench_name = ("_".join([self._name, str(self._policy), str(self._input), self._container, self._type,  self._signature])).replace(" ", "_")
+        bench_name = (
+            "_".join([self._name, str(self._policy), str(self._input), self._container, self._type, self._signature])
+        ).replace(" ", "_")
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
@@ -61,7 +63,7 @@ class BenchmarkSource:
                 signature=self._signature,
                 policy=str(self._policy),
                 input=self._input,
-                return_val=self._return
+                return_val=self._return,
             )
         )
 
