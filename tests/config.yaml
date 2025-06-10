@@ -1,15 +1,43 @@
-template: "input_range.jinja"
-
-benchmark:
-  name: ["count_if", "all_of"]
+benchmarks:
   policy: ["par", "par_unseq", "seq"]
+  input: ["random"]
+  container: ["std::vector"]
+  return: ["true"]
   container: ["std::vector"]
   type: ["int"]
-  predicate: ["[](int i) { return i % 4 == 0; }"]
 
-environment:
-  compiler: ["clang++-19", "g++"]
-  compiler_opts: ["-O2"]
-  size: ["1000", "10000", "100000", "1000000", "10000000"]
+  environment:
+    compiler_options: ["-O2"]
+    size: ["1000", "10000", "100000", "1000000", "10000000"]
 
+  algorithms:
+    - name: ["all_of", "any_of", "none_of", "find_if", "find_if_not"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int i) { return i % 2 == 0; }"]
 
+    - name: ["adjacent_find"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y;}"]
+
+    - name: ["find", "count"]
+      signature: ["input_container__.begin(), input_container__.end(), 999"]
+
+    - name: ["find_end", "find_first_of"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end(), [](int x, int y) { return x < y;}"]
+      override:
+        input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
+
+    - name: ["sort", "stable_sort"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y; }"]
+      override:
+        return: ["false"]
+        environment:
+          compiler_options: ["-O3"]
+
+    - name: ["transform"]
+      signature: ["input_container__.cbegin(), input_container__.cend(), input_container__.cbegin(), input_container__.begin(), std::plus<>{}"]
+      override:
+        policy: ["par", "par_unseq", "seq"]
+
+    - name: ["mismatch"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end()"]
+      override:
+        input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
