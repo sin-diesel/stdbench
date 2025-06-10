@@ -1,14 +1,16 @@
-template: "input_range.jinja"
+template: "input_value.jinja"
 
 benchmark:
-  name: ["for_each_n"]
+  name: ["fill_n"]
   policy: ["par", "par_unseq", "seq"]
   container: ["std::vector"]
   type: ["int"]
   predicate: ["[](int i) { return i % 4 == 0; }"]
+  count: ["10"]
+  value: ["999"]
 
 environment:
-  compiler: ["clang++-19", "g++"]
+  compiler: ["g++"]
   compiler_opts: ["-O2"]
-  size: ["10000", "20000", "30000", "40000", "50000", "60000", "70000"]
+  size: ["10000", "100000", "1000000", "10000000"]
 

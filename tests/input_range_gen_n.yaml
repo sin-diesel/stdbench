@@ -1,0 +1,14 @@
+template: "input_range_noreturn_val.jinja"
+
+benchmark:
+  name: ["generate_n"]
+  policy: ["par", "par_unseq", "seq"]
+  container: ["std::vector"]
+  type: ["int"]
+  value: ["100"]
+  predicate: ["[n = 0] () mutable { return n++; }"]
+
+environment:
+  compiler: ["g++"]
+  compiler_opts: ["-O2"]
+  size: ["1000", "10000", "100000", "1000000", "10000000", "100000000"]

@@ -55,7 +55,7 @@ def test_analyzer():
 
 
 def test_plot_all():
-    configs = ["input_range_value_pred.yaml"]
+    configs = ["input_range_sort.yaml"]
 
     for config_value in configs:
         config = Config(_repo_root / "tests" / config_value)
