@@ -5,6 +5,6 @@ SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 COMPILERS="g++"
 
 for COMPILER in $COMPILERS; do
-  ctest --test-dir build/$COMPILER
+  ctest --test-dir build/$COMPILER -j8
 done
 

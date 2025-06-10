@@ -33,7 +33,7 @@ benchmarks:
           compiler_options: ["-O3"]
 
     - name: ["transform"]
-      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), std::plus<>{}"]
+      signature: ["input_container__.cbegin(), input_container__.cend(), input_container__.cbegin(), input_container__.begin(), std::plus<>{}"]
       override:
         policy: ["par", "par_unseq", "seq"]
 

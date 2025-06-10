@@ -18,7 +18,6 @@
 
   {{ container }}<{{ type }}> input_container__(size__);
   {{ container }}<{{ type }}> destination_container__(size__);
-  {% endblock %}
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -29,9 +28,8 @@
   {% else %}
     destination_container__ = {{ input }};
   {% endif %}
+  {% endblock %}
 
-           {{ input  }}
-           {{ return_val }}
   {% block benchmark %}
     {% set call = "std::" ~ name ~ "(std::execution::" ~ policy ~ "," ~ signature ~ ");"%}
     {% if return_val == "true" %} 

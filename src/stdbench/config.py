@@ -35,21 +35,28 @@ class Config:
     @staticmethod
     def _resolve_overrides(config: dict[str, list[str] | str]) -> list[BenchmarkConfig]:
         benchmark_configs: list[BenchmarkConfig] = []
-        policy = [Policy[policy] for policy in config["benchmarks"]["policy"]]
-        input = config["benchmarks"]["input"]
-        environment = config["benchmarks"]["environment"]
-        container = config["benchmarks"]["container"]
-        type = config["benchmarks"]["type"]
-        return_val = config["benchmarks"]["return"]
+        default_policy = [Policy[policy] for policy in config["benchmarks"]["policy"]]
+        default_input = config["benchmarks"]["input"]
+        default_environment = config["benchmarks"]["environment"]
+        default_container = config["benchmarks"]["container"]
+        default_type = config["benchmarks"]["type"]
+        default_return_val = config["benchmarks"]["return"]
+
+        policy = default_policy
+        input = default_input
+        container = default_container
+        type = default_type
+        return_val = default_return_val
+        environment = default_environment
 
         for algorithm in config["benchmarks"]["algorithms"]:
             if algorithm.get("override", None):
-                policy = algorithm["override"].get("policy", policy)
-                input = algorithm["override"].get("input", input)
-                container = algorithm["override"].get("container", container)
-                environment = algorithm["override"].get("environment", environment)
-                type = algorithm["override"].get("type", type)
-                return_val = algorithm["override"].get("return", return_val)
+                policy = algorithm["override"].get("policy", default_policy)
+                input = algorithm["override"].get("input", default_input)
+                container = algorithm["override"].get("container", default_container)
+                environment = algorithm["override"].get("environment", default_environment)
+                type = algorithm["override"].get("type", default_type)
+                return_val = algorithm["override"].get("return", default_return_val)
 
             benchmark_configs.append(
                 BenchmarkConfig(

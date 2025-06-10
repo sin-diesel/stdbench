@@ -45,7 +45,7 @@ class BenchmarkSource:
         return self._algorithm_name
 
     def generate(self) -> None:
-        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">"]
+        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">", ","]
         bench_name = (
             "_".join([self._name, str(self._policy), self._input, self._container, self._type, self._signature])
         ).replace(" ", "_")
@@ -54,15 +54,6 @@ class BenchmarkSource:
         bench_name = bench_name.replace("+", "plus")
 
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
-
-        print(self._template.render(
-                name=self._name,
-                container=self._container,
-                type=self._type,
-                signature=self._signature,
-                policy=str(self._policy),
-                input=self._input,
-                return_val=self._return))
 
         benchmark_path.write_text(
             self._template.render(
