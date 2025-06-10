@@ -19,3 +19,9 @@ def test_bench_generator():
     bench_generator = BenchGenerator(config=config, output_dir=_repo_root / "build" / "benchmarks", templates_path=_repo_root / "templates")
     bench_generator.generate()
 
+def test_cmake_test_generator():
+    config = Config(_repo_root / "tests" / "config.yaml")
+    bench_generator = BenchGenerator(config=config, output_dir=_repo_root / "build" / "benchmarks", templates_path=_repo_root / "templates")
+    benchmarks = bench_generator.generate()
+
+

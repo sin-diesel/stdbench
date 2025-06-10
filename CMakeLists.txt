@@ -29,7 +29,7 @@ function(add_stdbench_test bare_name benchmark size compiler_opts_value)
 endfunction()
 
 foreach(benchmark ${benchmarks})
-   foreach (compiler_opts_value ${compiler_opts})
+   foreach (compiler_opts_value ${compiler_options})
       get_filename_component(bare_name ${benchmark} NAME_WE)
 
       set(executable_name "${bare_name}_${compiler_opts_value}")

@@ -25,7 +25,7 @@
     std::generate(input_container__.begin(), input_container__.end(), [&](){return dist(gen);});
   {% endif %}
   {% block benchmark %}
-    {% set call = "std::" ~ name ~ "(std::execution::" ~ policy ~ "," ~ signature %}
+    {% set call = "std::" ~ name ~ "(std::execution::" ~ policy ~ "," ~ signature ~ ");"%}
     {% if return_val == "true" %} 
       auto result = {{ call }}
       benchmark::DoNotOptimize(result);

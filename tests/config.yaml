@@ -18,8 +18,9 @@ benchmarks:
       signature: ["input_container__.begin(), input_container__.end(), 999"]
 
     - name: ["sort", "stable_sort"]
-      signature: ["input_container__.begin(), input_contaienr__.end(), [](int x, int y) { return x < y; }"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y; }"]
       override:
+        return: ["false"]
         environment:
           compiler_options: ["-O3"]
 

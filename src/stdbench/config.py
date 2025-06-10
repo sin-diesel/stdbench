@@ -5,11 +5,32 @@ from pathlib import Path
 from stdbench.benchmark import BenchmarkConfig, Policy, Input
 
 
+class _CMakeHints:
+    def __init__(self, path: Path) -> None:
+        self._hints: list[tuple[str, str]] = []
+        self._path = path
+
+    def add(self, var: str, value: str) -> None:
+        if not isinstance(var, str) or not isinstance(value, list):
+            raise ValueError("Incorrect config, all keys must be str, all values must be lists")
+        self._hints.append((var, value))
+
+    def generate(self) -> None:
+        hints_text = "".join([f"SET(\"{hint[0]}\" {' '.join(hint[1])})\n" for hint in self._hints])
+        self._path.write_text(hints_text)
+
+
 class Config:
     def __init__(self, path: Path) -> None:
         with open(path, "r") as file:
             self._config = yaml.safe_load(file)
         self._benchmark_configs = self._resolve_overrides(self._config)
+
+    def generate_cmake_hints(self, output_dir: Path) -> None:
+        cmake_hints = _CMakeHints(path=output_dir / "hints.cmake")
+        for var, value in self._config["benchmarks"]["environment"].items():
+            cmake_hints.add(var=var, value=value)
+        cmake_hints.generate()
 
     @staticmethod
     def _resolve_overrides(config: dict[str, list[str] | str]) -> list[BenchmarkConfig]:

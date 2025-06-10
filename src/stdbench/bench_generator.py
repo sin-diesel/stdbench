@@ -46,7 +46,7 @@ class BenchmarkSource:
 
     def generate(self) -> None:
         forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">"]
-        bench_name = ("_".join([self._name, str(self._policy), str(self._input), self._signature])).replace(" ", "_")
+        bench_name = ("_".join([self._name, str(self._policy), str(self._input), self._container, self._type,  self._signature])).replace(" ", "_")
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
@@ -115,4 +115,5 @@ class BenchGenerator:
                 benchmark.generate()
                 benchmarks.append(benchmark)
 
+        self._config.generate_cmake_hints(self._output_dir)
         return benchmarks
