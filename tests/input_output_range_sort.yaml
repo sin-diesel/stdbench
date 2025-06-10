@@ -1,0 +1,13 @@
+template: "input_output_range.jinja"
+
+benchmark:
+  name: ["find_end", "find_first_of", "mismatch", "equal"]
+  policy: ["par", "par_unseq", "seq"]
+  container: ["std::vector"]
+  type: ["int"]
+  predicate: ["[](int x, int y){return std::abs(x - y) <= 2;}"]
+
+environment:
+  compiler: ["g++"]
+  compiler_opts: ["-O0", "-O2"]
+  size: ["1000", "10000", "100000", "1000000", "10000000", "100000000"]

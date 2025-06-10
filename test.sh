@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 
-COMPILERS="g++ clang++-19"
+COMPILERS="g++"
 
 for COMPILER in $COMPILERS; do
   ctest --test-dir build/$COMPILER

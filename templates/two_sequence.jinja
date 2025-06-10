@@ -15,7 +15,7 @@
   size_t size = 0;
   std::cin >> size;
   {{ container }}<{{type}}> src_container(size);
-  src_container.reserve(size);
+  {{ container }}<{{type}}> s_container{ {{ sequence }} };
 
   {% block init_container %}
     {{ super () }}
@@ -23,11 +23,12 @@
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(1, 100);
     std::generate(src_container.begin(), src_container.end(), [&](){return dist(gen);});
+    std::generate(s_container.begin(), s_container.end(), [&](){return dist(gen);});
     {% endblock %}
   {% endblock %}
 
   {% block benchmark %}
-  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ predicate }});
+  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), s_container.begin(), s_container.end());
   benchmark::DoNotOptimize(result);
   {% endblock %}
 

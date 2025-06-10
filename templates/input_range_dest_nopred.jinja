@@ -15,7 +15,7 @@
   size_t size = 0;
   std::cin >> size;
   {{ container }}<{{type}}> src_container(size);
-  src_container.reserve(size);
+  {{ container }}<{{type}}> dst_container(size * 2);
 
   {% block init_container %}
     {{ super () }}
@@ -27,7 +27,7 @@
   {% endblock %}
 
   {% block benchmark %}
-  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), {{ predicate }});
+  auto result = std::{{ name }}(std::execution::{{ policy }}, src_container.begin(), src_container.end(), dst_container.begin());
   benchmark::DoNotOptimize(result);
   {% endblock %}
 

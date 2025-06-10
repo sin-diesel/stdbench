@@ -15,7 +15,6 @@ def test_config():
     assert config
     benchmark_config = config.benchmark_config()
     assert "name" in benchmark_config.keys()
-
     benchmark_config_transposed = config.benchmark_config(transposed=True)
     assert isinstance(benchmark_config_transposed[0], list)
     assert isinstance(benchmark_config_transposed[0][0], dict)
@@ -55,17 +54,25 @@ def test_analyzer():
     results_analyzer = ResultsAnalyzer(config=config, tests=cmake_tests)
 
 
-def test_plot():
-    config = Config(_repo_root / "tests" / "config.yaml")
-    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
-    benchmarks = bench_generator.generate()
+def test_plot_all():
+    configs = ["input_range_sort.yaml"]
 
-    test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
-    cmake_tests = test_generator.generate()
-    assert len(cmake_tests) > 0
+    for config_value in configs:
+        config = Config(_repo_root / "tests" / config_value)
+        bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+        benchmarks = bench_generator.generate()
 
-    results_analyzer = ResultsAnalyzer(config=config, tests=cmake_tests)
-    results_analyzer.plot_all()
+    for config_value in configs:
+        config = Config(_repo_root / "tests" / config_value)
+        bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+        benchmarks = bench_generator.generate()
+
+        test_generator = TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
+        cmake_tests = test_generator.generate()
+        assert len(cmake_tests) > 0
+
+        results_analyzer = ResultsAnalyzer(config=config, tests=cmake_tests)
+        results_analyzer.plot_all()
 
 #def test_benchmarks_generation():
 #    config_path = _repo_root / "tests" / "config.yaml"

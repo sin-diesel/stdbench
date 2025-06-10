@@ -15,7 +15,6 @@
   size_t size = 0;
   std::cin >> size;
   {{ container }}<{{type}}> src_container(size);
-  src_container.reserve(size);
 
   {% block init_container %}
     {{ super () }}
