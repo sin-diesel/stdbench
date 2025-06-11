@@ -42,16 +42,17 @@ class BenchmarkSource:
 
     @property
     def algorithm_name(self) -> str:
-        return self._algorithm_name
+        return self._name
 
     def generate(self) -> None:
-        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">", ","]
+        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">", ",", "."]
         bench_name = (
             "_".join([self._name, str(self._policy), self._input, self._container, self._type, self._signature])
         ).replace(" ", "_")
         bench_name = bench_name.translate({ord(char): "_" for char in forbidden_characters})
         bench_name = bench_name.replace("%", "div")
         bench_name = bench_name.replace("+", "plus")
+        self._executable_name = bench_name
 
         benchmark_path = self._output_dir / f"{bench_name}.cpp"
 
@@ -96,11 +97,11 @@ class BenchGenerator:
         self._template = self._env.get_template("algorithm_benchmark.jinja")
 
     def generate(self) -> list[BenchmarkSource]:
+        benchmarks: list[BenchmarkSource] = []
         for benchmark_config in self._config.benchmark_configs:
             transposed_bench_configs = Config.transpose(benchmark_config.algorithm_config())
             benchmarks_product = list(product(*transposed_bench_configs))
 
-            benchmarks: list[BenchmarkSource] = []
             for transposed_config in benchmarks_product:
                 normalized_config = Config.normalize(transposed_config)
                 benchmark = BenchmarkSource(
