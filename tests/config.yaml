@@ -17,10 +17,27 @@ benchmarks:
     - name: ["adjacent_find"]
       signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y;}"]
 
+    - name: ["copy", "move"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin()"]
+
+    - name: ["replace"]
+      signature: ["input_container__.begin(), input_container__.end(), 998, 999"]
+      override:
+        return: ["false"]
+
+    - name: ["copy_n"]
+      signature: ["input_container__.begin(), 1000, destination_container__.begin()"]
+
+    - name: ["copy_if"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int i) { return i % 2 == 0; }"]
+
     - name: ["find", "count"]
       signature: ["input_container__.begin(), input_container__.end(), 999"]
 
-    - name: ["find_end", "find_first_of"]
+    - name: ["search_n"]
+      signature: ["input_container__.begin(), input_container__.end(), 100, 999"]
+
+    - name: ["find_end", "find_first_of", "search"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end(), [](int x, int y) { return x < y;}"]
       override:
         input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
@@ -35,7 +52,22 @@ benchmarks:
       override:
         policy: ["par", "par_unseq", "seq"]
 
-    - name: ["mismatch"]
+    - name: ["mismatch", "equal"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end()"]
       override:
         input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
+
+    - name: ["uninitialized_value_construct"]
+      signature: ["destination_container__.begin(), destination_container__.end()"]
+      override:
+        return: ["false"]
+
+    - name: ["uninitialized_value_construct_n"]
+      signature: ["destination_container__.begin(), 1000"]
+      override:
+        return: ["false"]
+
+    - name: ["uninitialized_fill_n"]
+      signature: ["destination_container__.begin(), 1000, 999"]
+      override:
+        return: ["false"]
