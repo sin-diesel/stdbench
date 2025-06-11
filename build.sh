@@ -9,6 +9,6 @@ for COMPILER in $COMPILERS; do
 done
 
 for COMPILER in $COMPILERS; do
-  cmake --build build/$COMPILER -j8
+  cmake --build build/$COMPILER -j10
 done
 

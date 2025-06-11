@@ -7,13 +7,14 @@
 #include <numeric>
 #include <iostream>
 #include <random>
+
+size_t size__ = 0;
 {% endblock %}
+
 
 {% block benhcmark_function %}
 {{ super () }}
   {% block setup %}
-  size_t size__ = 0;
-  std::cin >> size__;
 
 
   {{ container }}<{{ type }}> input_container__(size__);
@@ -42,4 +43,14 @@
     {% endif %}
   {% endblock %}
 
+{% endblock %}
+
+{% block bench_register %}
+{{ super() }}
+int main(int argc, char** argv) {
+    std::cin >> size__;
+    
+    ::benchmark::Initialize(&argc, argv);
+    ::benchmark::RunSpecifiedBenchmarks();
+}
 {% endblock %}
