@@ -10,6 +10,7 @@ runs:
       sudo apt update
       sudo apt install clang-19
       sudo apt install gnuplot
+      sudo apt install libtbb-dev
     shell: bash
 
   - name: Lint
