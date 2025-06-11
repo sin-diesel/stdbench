@@ -21,11 +21,13 @@ class ResultsAnalyzer:
             test.collect_measurements()
 
     def plot_all(self) -> None:
+        breakpoint()
         benchmark_config = self._config.benchmark_config()
         environment_config = self._config.environment_config()
         test_config = benchmark_config | environment_config
+        breakpoint()
 
-        plot_keys = ["compiler", "compiler_opts", "container", "type", "name"]
+        plot_keys = ["compiler", "compiler_options", "container", "type", "name", "input"]
         plot_configurations = {k: v for k, v in test_config.items() if k in plot_keys}
 
         cartesian_product = list(product(*Config.transpose(plot_configurations)))
