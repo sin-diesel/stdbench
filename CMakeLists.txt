@@ -31,7 +31,9 @@ endfunction()
 
 foreach(benchmark ${benchmarks})
    foreach (compiler_opts_value ${compiler_options})
+      message("benchmark = " ${benchmark})
       get_filename_component(bare_name ${benchmark} NAME_WE)
+      message(${bare_name})
 
       set(executable_name "${bare_name}_${compiler_opts_value}")
       add_executable(${executable_name} ${benchmark})

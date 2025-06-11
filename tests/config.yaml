@@ -29,8 +29,6 @@ benchmarks:
       signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y; }"]
       override:
         return: ["false"]
-        environment:
-          compiler_options: ["-O3"]
 
     - name: ["transform"]
       signature: ["input_container__.cbegin(), input_container__.cend(), input_container__.cbegin(), input_container__.begin(), std::plus<>{}"]

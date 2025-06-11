@@ -25,7 +25,7 @@ def test_config():
 
 def test_bench_generator():
     config = Config(_repo_root / "tests" / "config.yaml")
-    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks",  templates_path = _repo_root / "templates")
+    bench_generator = BenchGenerator(config=config, output_dir = _repo_root / "build" / "benchmarks", templates_path = _repo_root / "templates")
     benchmarks = bench_generator.generate()
     assert len(benchmarks) > 0
     assert len(os.listdir(_repo_root / "build" / "benchmarks")) > 0
