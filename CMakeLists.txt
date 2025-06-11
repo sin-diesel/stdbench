@@ -5,6 +5,8 @@ set(benchmarks_path "build/benchmarks")
 include(${benchmarks_path}/hints.cmake)
 
 find_package(benchmark REQUIRED)
+find_package(TBB REQUIRED COMPONENTS tbb)
+find_package(OpenMP REQUIRED)
 
 file(GLOB benchmarks "${benchmarks_path}/*.cpp")
 enable_testing()
@@ -40,6 +42,8 @@ foreach(benchmark ${benchmarks})
 
       target_compile_options(${executable_name} PRIVATE ${compiler_opts_value})
       target_link_libraries(${executable_name} benchmark::benchmark)
+      target_link_libraries(${executable_name} TBB::tbb)
+      target_link_libraries(${executable_name} OpenMP::OpenMP_CXX)
       foreach (size_value ${size})
          add_stdbench_test(${bare_name} ${benchmark} ${size_value} ${compiler_opts_value})
       endforeach()
