@@ -38,7 +38,9 @@ class ResultsAnalyzer:
                     tests = [
                         test
                         for test in self._tests
-                        if all([getattr(test, param) == policy_plot_params[param] for param in policy_plot_params.keys()])
+                        if all(
+                            [getattr(test, param) == policy_plot_params[param] for param in policy_plot_params.keys()]
+                        )
                     ]
 
                     x = np.array([int(test.size) for test in tests])
