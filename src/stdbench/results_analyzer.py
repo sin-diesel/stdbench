@@ -18,6 +18,25 @@ class ResultsAnalyzer:
         self._tests = tests
         for test in self._tests:
             test.collect_measurements()
+            breakpoint()
+
+    def compare(
+        self,
+        *,
+        algorithm: str,
+        policies: tuple[str, str],
+        size: int,
+        compiler: str,
+        container: str,
+        type: str
+    ) -> None:
+        policy_first = policies[0]
+        tests_first = [test for test in self._tests if algorithm == test.name and policy_first == test.policy and compiler == test.compiler and compiler_options == test.compiler_options and input == test.input and container == test.container and type == test.type]
+
+        policy_second = policies[1]
+        tests_second = [test for test in self._tests if algorithm == test.name and policy_second == test.policy and compiler == test.compiler and compiler_options == test.compiler_options and input == test.input and container == test.container and type == test.type]
+
+        breakpoint()
 
     def plot_all(self) -> None:
         for benchmark_config in self._config.benchmark_configs:
