@@ -52,10 +52,13 @@ benchmarks:
       override:
         policy: ["par", "par_unseq", "seq"]
 
-    - name: ["mismatch", "equal"]
+    - name: ["mismatch"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end()"]
       override:
         input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
+
+    - name: ["equal"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end()"]
 
     - name: ["uninitialized_value_construct"]
       signature: ["destination_container__.begin(), destination_container__.end()"]
