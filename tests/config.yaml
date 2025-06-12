@@ -68,16 +68,11 @@ benchmarks:
     - name: ["rotate_copy"]
       signature: ["input_container__.begin(), input_container__.begin() + 1, input_container__.end(), destination_container__.begin()"]
 
-    - name: ["shift_left", "shift_right"]
-      signature: ["input_container__.begin(), input_container__.end(), 100"] 
-
-    - name: ["random_shuffle", "shuffle"]
-      signature: ["input_container__.begin(), input_container__.end(), gen"] 
-
     - name: ["adjacent_difference"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), std::plus<>{}"] 
+
     - name: ["replace_copy_if"]
-      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), 999, 1000"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int i) { return i % 2 == 0; }, 1000"]
 
     - name: ["uninitialized_fill_n", "fill_n"]
       signature: ["destination_container__.begin(), 1000, 999"]
@@ -130,6 +125,5 @@ benchmarks:
       signature: ["input_container__.begin(), input_container__.begin() + 1, input_container__.end()"]
       override:
         return: ["false"]
-
 
 
