@@ -68,7 +68,6 @@ class ResultsAnalyzer:
         ratios = sorted(ratios, key=lambda value: value[1])
         names = [ratio[0] for ratio in ratios]
         speedups = [ratio[1] for ratio in ratios]
-        breakpoint()
 
         fig, ax = plt.subplots(figsize=(8, 5))
 
