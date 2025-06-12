@@ -33,9 +33,10 @@ def test_compare():
     bench_generator = BenchGenerator(config=config, output_dir=_repo_root / "build" / "benchmarks", templates_path=_repo_root / "templates")
     benchmarks = bench_generator.generate()
     test_generator =  TestGenerator(config=config, build_path=_repo_root / "build", benchmarks=benchmarks)
-    test_generator.generate()
+    tests = test_generator.generate()
     results_analyzer = ResultsAnalyzer(config=config, tests=tests)
-    results_analyzer.compare(algorithm="copy", policies=("seq", "par"), size=1000000, compiler="g++", container="std::vector", type="int")
+    results_analyzer.compare(algorithm="copy", policies=("seq", "par"), size="1000000", compiler="g++", container="std::vector", type="int")
+    results_analyzer.compare_all(policies=("seq", "par"), size="1000000", compiler="g++", container="std::vector", type="int")
 
 def test_plot():
     config = Config(_repo_root / "tests" / "config.yaml")

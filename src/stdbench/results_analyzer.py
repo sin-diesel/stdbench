@@ -18,7 +18,6 @@ class ResultsAnalyzer:
         self._tests = tests
         for test in self._tests:
             test.collect_measurements()
-            breakpoint()
 
     def compare(
         self,
@@ -29,14 +28,56 @@ class ResultsAnalyzer:
         compiler: str,
         container: str,
         type: str
-    ) -> None:
+    ) -> float:
         policy_first = policies[0]
-        tests_first = [test for test in self._tests if algorithm == test.name and policy_first == test.policy and compiler == test.compiler and compiler_options == test.compiler_options and input == test.input and container == test.container and type == test.type]
+        tests_first = [test for test in self._tests if algorithm == test.name and policy_first == test.policy and compiler == test.compiler and container == test.container and type == test.type and size == test.size]
+        execution_time_first = set([test.cpu_time for test in tests_first]).pop()
 
         policy_second = policies[1]
-        tests_second = [test for test in self._tests if algorithm == test.name and policy_second == test.policy and compiler == test.compiler and compiler_options == test.compiler_options and input == test.input and container == test.container and type == test.type]
+        tests_second = [test for test in self._tests if algorithm == test.name and policy_second == test.policy and compiler == test.compiler and container == test.container and type == test.type and size == test.size]
 
+        execution_time_second = set([test.cpu_time for test in tests_second]).pop()
+        return execution_time_first / execution_time_second
+
+    def compare_all(
+        self,
+        *,
+        policies: tuple[str, str],
+        size: int,
+        compiler: str,
+        container: str,
+        type: str
+    ) -> list[tuple[str, float]]:
+        algorithms = set([test.name for test in self._tests])
+        ratios: list[tuple[str, float]] = []
+        ratios = [(algorithm, self.compare(
+            algorithm=algorithm,
+            policies=policies,
+            size=size,
+            compiler=compiler,
+            container=container,
+            type=type
+        )) for algorithm in algorithms]
+        ratios = sorted(ratios, key=lambda value: value[1])
         breakpoint()
+
+
+        gp_instance = gnuplotlib.Gnuplot()
+        gp_instance('set yrange [1:*]') 
+
+        gp_instance('''
+            set style data histogram
+            set style fill solid
+            set boxwidth 0.8
+            plot '-' using 2:xtic(1) with boxes title 'Data'
+            "A" 5
+            "B" 8
+            "C" 3
+            "D" 7
+            "E" 6
+            e
+        '''
+        )
 
     def plot_all(self) -> None:
         for benchmark_config in self._config.benchmark_configs:
