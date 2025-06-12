@@ -11,19 +11,17 @@ benchmarks:
     size: ["100000", "1000000", "10000000"]
 
   algorithms:
-    - name: ["all_of", "any_of", "none_of", "find_if", "find_if_not"]
+    - name: ["all_of", "any_of", "none_of", "find_if", "find_if_not", "remove_if", "is_partitioned", "partition", "stable_partition"]
       signature: ["input_container__.begin(), input_container__.end(), [](int i) { return i % 2 == 0; }"]
 
-    - name: ["adjacent_find"]
+    - name: ["is_sorted_until", "is_sorted"]
+      signature: ["input_container__.begin(), input_container__.end()"] 
+
+    - name: ["adjacent_find", "max_element", "min_element", "minmax_element"]
       signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y;}"]
 
     - name: ["copy", "move"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin()"]
-
-    - name: ["replace"]
-      signature: ["input_container__.begin(), input_container__.end(), 998, 999"]
-      override:
-        return: ["false"]
 
     - name: ["copy_n"]
       signature: ["input_container__.begin(), 1000, destination_container__.begin()"]
@@ -31,21 +29,22 @@ benchmarks:
     - name: ["copy_if"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int i) { return i % 2 == 0; }"]
 
-    - name: ["find", "count"]
+    - name: ["remove_copy_if"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int i) { return i % 2 == 0; }"]
+
+    - name: ["find", "count", "remove"]
       signature: ["input_container__.begin(), input_container__.end(), 999"]
 
     - name: ["search_n"]
       signature: ["input_container__.begin(), input_container__.end(), 100, 999"]
 
-    - name: ["find_end", "find_first_of", "search"]
+    - name: ["find_end", "find_first_of", "search", "lexicographical_compare"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end(), [](int x, int y) { return x < y;}"]
       override:
         input: ["{1, 2, 3, 4, 5, 6, 7, 8}"]
 
-    - name: ["sort", "stable_sort"]
-      signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y; }"]
-      override:
-        return: ["false"]
+    - name: ["unique_copy"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int x, int y) { return x < y; }"]
 
     - name: ["transform"]
       signature: ["input_container__.cbegin(), input_container__.cend(), input_container__.cbegin(), input_container__.begin(), std::plus<>{}"]
@@ -60,8 +59,43 @@ benchmarks:
     - name: ["equal"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end()"]
 
-    - name: ["uninitialized_value_construct"]
-      signature: ["destination_container__.begin(), destination_container__.end()"]
+    - name: ["reverse_copy"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin()"]
+
+    - name: ["partial_sort_copy", "includes"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), destination_container__.end(), std::greater{}"]
+
+    - name: ["rotate_copy"]
+      signature: ["input_container__.begin(), input_container__.begin() + 1, input_container__.end(), destination_container__.begin()"]
+
+    - name: ["shift_left", "shift_right"]
+      signature: ["input_container__.begin(), input_container__.end(), 100"] 
+
+    - name: ["random_shuffle", "shuffle"]
+      signature: ["input_container__.begin(), input_container__.end(), gen"] 
+
+    - name: ["adjacent_difference"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), std::plus<>{}"] 
+    - name: ["replace_copy_if"]
+      signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), 999, 1000"]
+
+    - name: ["uninitialized_fill_n", "fill_n"]
+      signature: ["destination_container__.begin(), 1000, 999"]
+      override:
+        return: ["false"]
+
+    - name: ["generate"]
+      signature: ["destination_container__.begin(), destination_container__.end(), [n = 0] () mutable { return n++; }"]
+      override:
+        return: ["false"]
+
+    - name: ["generate_n"]
+      signature: ["destination_container__.begin(), 1000, [n = 0] () mutable { return n++; }"]
+      override:
+        return: ["false"]
+
+    - name: ["replace"]
+      signature: ["input_container__.begin(), input_container__.end(), 998, 999"]
       override:
         return: ["false"]
 
@@ -70,7 +104,32 @@ benchmarks:
       override:
         return: ["false"]
 
-    - name: ["uninitialized_fill_n"]
-      signature: ["destination_container__.begin(), 1000, 999"]
+    - name: ["uninitialized_value_construct", "reverse"]
+      signature: ["destination_container__.begin(), destination_container__.end()"]
       override:
         return: ["false"]
+
+    - name: ["sort", "stable_sort", "unique"]
+      signature: ["input_container__.begin(), input_container__.end(), [](int x, int y) { return x < y; }"]
+      override:
+        return: ["false"]
+
+    - name: ["fill"]
+      signature: ["input_container__.begin(), input_container__.end(), 999"]
+      override:
+        return: ["false"]
+
+
+    - name: ["partial_sort"]
+      signature: ["input_container__.begin(), input_container__.begin() + 3, input_container__.end(), std::greater{}"]
+      override:
+        return: ["false"]
+
+
+    - name: ["rotate", "nth_element"]
+      signature: ["input_container__.begin(), input_container__.begin() + 1, input_container__.end()"]
+      override:
+        return: ["false"]
+
+
+

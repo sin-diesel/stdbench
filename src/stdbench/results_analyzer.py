@@ -86,6 +86,12 @@ class ResultsAnalyzer:
         ax.set_xlabel("algorithms")
         ax.set_ylabel(f"speedup, {policies[1]} / {policies[0]}")
 
+        ax.axhspan(0, 1, color='lightgray', alpha=0.2, zorder=0)
+        ax.axhline(y=1, color='black', linestyle='--', linewidth=0.8)
+
+        ax.set_yticks([0, 0.2, 0.5, 1, 5, 10, 15])
+        ax.set_yticklabels(['0', '0.2', '0.5', '1', '5', '10', '15'])
+
         ax.set_xticklabels(names, fontsize=5)  # Smaller category labels
         ax.set_ylim(0, max(speedups) + 1.5)  # Ensures Y=1 is visible
 
