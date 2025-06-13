@@ -14,7 +14,7 @@ benchmarks:
     - name: ["all_of", "any_of", "none_of", "find_if", "find_if_not", "remove_if", "is_partitioned", "partition", "stable_partition"]
       signature: ["input_container__.begin(), input_container__.end(), [](int i) { return i % 2 == 0; }"]
 
-    - name: ["is_sorted_until", "is_sorted"]
+    - name: ["is_sorted_until", "is_sorted", "reduce"]
       signature: ["input_container__.begin(), input_container__.end()"] 
 
     - name: ["adjacent_find", "max_element", "min_element", "minmax_element"]
@@ -32,7 +32,7 @@ benchmarks:
     - name: ["remove_copy_if"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int i) { return i % 2 == 0; }"]
 
-    - name: ["find", "count", "remove"]
+    - name: ["find", "count"]
       signature: ["input_container__.begin(), input_container__.end(), 999"]
 
     - name: ["search_n"]
@@ -74,6 +74,24 @@ benchmarks:
     - name: ["replace_copy_if"]
       signature: ["input_container__.begin(), input_container__.end(), destination_container__.begin(), [](int i) { return i % 2 == 0; }, 1000"]
 
+    - name: ["set_union", "set_intersection", "set_difference", "set_symmetric_difference", "merge"]
+      signature: ["input_container__.begin(), input_container__.end(), input_container_second__.begin(), input_container_second__.end(), std::back_inserter(destination_container__)"]
+
+    - name: ["transform_inclusive_scan"]
+      signature: ["input_container__.begin(), input_container__.end(), std::ostream_iterator<int>(std::cout, \" \"), std::plus<int>{}, [](int x) { return x * 10; }"]
+
+    - name: ["transform_exclusive_scan"]
+      signature: ["input_container__.begin(), input_container__.end(), std::ostream_iterator<int>(std::cout, \" \"), 0, std::plus<int>{}, [](int x) { return x * 10; }"]
+
+    - name: ["exclusive_scan"]
+      signature: ["input_container__.begin(), input_container__.end(), std::ostream_iterator<int>(std::cout, \" \"), 1, std::multiplies<>{}"]
+
+    - name: ["inclusive_scan"]
+      signature: ["input_container__.begin(), input_container__.end(), std::ostream_iterator<int>(std::cout, \" \"), std::multiplies<>{}"]
+
+    - name: ["transform_reduce"]
+      signature: ["input_container__.begin(), input_container__.end(), 0L, std::plus<int>{}, [](auto val) { return val * val; }"]
+
     - name: ["uninitialized_fill_n", "fill_n"]
       signature: ["destination_container__.begin(), 1000, 999"]
       override:
@@ -114,7 +132,6 @@ benchmarks:
       override:
         return: ["false"]
 
-
     - name: ["partial_sort"]
       signature: ["input_container__.begin(), input_container__.begin() + 3, input_container__.end(), std::greater{}"]
       override:
@@ -125,5 +142,12 @@ benchmarks:
       signature: ["input_container__.begin(), input_container__.begin() + 1, input_container__.end()"]
       override:
         return: ["false"]
+
+    - name: ["inplace_merge"]
+      signature: ["input_container__.begin(), input_container__.begin() + (input_container__.end() - input_container__.begin()) / 2, input_container__.end()"]
+      override:
+        return: ["false"]
+
+
 
 
