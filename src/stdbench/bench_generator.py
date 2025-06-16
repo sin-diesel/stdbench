@@ -45,7 +45,7 @@ class BenchmarkSource:
         return self._name
 
     def generate(self) -> None:
-        forbidden_characters = ["{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">", ",", "."]
+        forbidden_characters = ["\"", "/", "{", "}", "[", "]", "(", ")", ";", ":", "=", "&", "<", ">", ",", ".", "*"]
         bench_name = (
             "_".join([self._name, str(self._policy), self._input, self._container, self._type, self._signature])
         ).replace(" ", "_")
